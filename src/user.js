@@ -14,14 +14,18 @@ class USER {
     this.kill = 0;
     this.die = 0;
     this.lastSprintTime = 0;
+    this.destination = {
+      x: this.x,
+      y: this.y
+    }
   }
 
-  Move(destination) {
-    if (this.x != destination.x) {
-      this.x += (destination.x - this.x) * this.speed / 100;
+  Update() {
+    if (this.x != this.destination.x) {
+      this.x += (this.destination.x - this.x) * this.speed / 100;
     }
-    if (this.y != destination.y) {
-      this.y += (destination.y - this.y) * this.speed / 100;
+    if (this.y != this.destination.y) {
+      this.y += (this.destination.y - this.y) * this.speed / 100;
     }
   }
 
