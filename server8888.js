@@ -1,10 +1,12 @@
-var user = require('./src/users.js');
+var USER = require('./src/user.js');
 var game = require('./src/game_control.js');
 var config = require('./config.js');
+let users = require('./src/game_control.js');
+let groups = require('./src/game_control.js');
 
 var express = require('express');
 var port = 8888;
-var app = express;
+var app = express();
 var server = require('http').createServer(app).listen(port, function() {
   console.log(`server on ${port}`);
 });
@@ -34,4 +36,4 @@ function sendData(users, groups) {
   web.emit('dataStream', data);
 }
 
-serInterval(sendData, 33);
+setInterval(sendData, 33);

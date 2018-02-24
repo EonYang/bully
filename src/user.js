@@ -2,18 +2,18 @@ var config = require('../config.js');
 
 class USER {
   constructor(id) {
-    id = "";
-    name ="Anonymous";
-    isAlive: 1;
-    dia = defaultUseDia;
+    this.id = "";
+    this.name = "Anonymous";
+    this.isAlive = 1;
+    this.dia = defaultUseDia;
 
-    x = Math.floor(Math.random() * config.canvas.x);
-    y = Math.floor(Math.random() * config.canvas.y);
-    speed = config.defaultSpeed;
+    this.x = Math.floor(Math.random() * config.canvas.x);
+    this.y = Math.floor(Math.random() * config.canvas.y);
+    this.speed = config.defaultSpeed;
 
-    kill = 0;
-    die = 0;
-    lastSprint = 0;
+    this.kill = 0;
+    this.die = 0;
+    this.lastSprintTime = 0;
   }
 
   Move(destination) {
@@ -25,21 +25,29 @@ class USER {
     }
   }
 
-  Sprint(){
+  Sprint() {
     let now = new Date().getTime();
-    if ((now - this.lastSprint)) {
-
-    }this.speed = 5
-    var sprint
+    if ((now - this.lastSprintTime) >= 15000) {
+      this.speed += 3;
+      setTimeout(function() {
+        this.speed = config.defaultSpeed;
+      }, 3000);
+    } else {
+      let coolDownIn = 15000
+      console.log('sprint cooling down in ');
+    }
   }
 }
 
 class GROUP {
-  constructor(user1Id, user1Id) {
-    users = [user1Id,user1Id];
-    x = Math.floor(Math.random() * config.canvas.x);
-    y = Math.floor(Math.random() * config.canvas.y);
-    dia = this.users.length * 20;
-    power = this.users.length;
+  constructor(user1Id, user2Id) {
+    this.users = [user1Id, user2Id];
+    this.x = Math.floor(Math.random() * config.canvas.x);
+    this.y = Math.floor(Math.random() * config.canvas.y);
+    this.dia = this.users.length * 20;
+    this.power = this.users.length;
   }
 }
+
+module.exports = USER;
+module.exports = GROUP;
