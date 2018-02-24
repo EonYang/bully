@@ -22,8 +22,10 @@ function setup(){
     }
   });
 }
+function draw(){
 
-function mouseMove(){
+}
+function mouseMoved(){
   socket.emit('newPosition',function(){
     let pos = {
       x: mouseX,
@@ -35,7 +37,7 @@ function mouseMove(){
 
 function drawUsers(id, pos, dia){
   if(id == socket.id){
-    fill(120);
+    fill(225);
   }else{
     fill(0);
   }
