@@ -12,8 +12,12 @@ for (var i = 0; i < 10; i++) {
 console.log('Created 10 users');
 console.log(users);
 
-// groups.push(new GROUP('1', '2'));
-// groups.push(new GROUP('5', '6'));
+let data = {
+  users:users,
+  groups:groups,
+}
 
-module.exports = users;
-// module.exports = groups;
+groups.push(new GROUP('1', '2'));
+groups.push(new GROUP('5', '6'));
+
+module.exports = data;
