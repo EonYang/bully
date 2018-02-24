@@ -2,7 +2,7 @@ var USER = require('./src/user.js');
 var game = require('./src/game_control.js');
 var config = require('./config.js');
 let users = require('./src/game_control.js');
-let groups = require('./src/game_control.js');
+// let groups = require('./src/game_control.js');
 
 var express = require('express');
 var port = 8888;
@@ -28,12 +28,20 @@ web.on('connection', function(socket) {
   });
 });
 
-function sendData(users, groups) {
+function sendData() {
   let data = {
     users:users,
-    groups:groups,
+    // groups:groups,
   }
   web.emit('dataStream', data);
 }
 
 setInterval(sendData, 33);
+
+function Logs() {
+  console.log(users);
+  // console.log(groups);
+
+}
+
+setInterval(Logs, 3000);
