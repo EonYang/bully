@@ -22,7 +22,6 @@ app.use(express.static('public'));
 var web = io.of('/');
 
 web.on('connection', function(socket) {
-  //listen to player connect, if call, create new user;
   console.log(`An player ${socket.id} connected`);
   data.users.push(new USER(socket.id));
 
@@ -42,7 +41,7 @@ web.on('connection', function(socket) {
 
   //listen to disconnect, if call, delete the user;
   socket.on('disconnect', function() {
-    console.log(`An output client ${socket.id} has disconnected`);
+    // console.log(`An output client ${socket.id} has disconnected`);
   });
 });
 

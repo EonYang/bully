@@ -11,13 +11,20 @@ function setup(){
     socket.emit('disconnected', socket.id);
   });
 
-  socket.on('dataStream', function(){
-    console.log('dataStream' + dataStream);
+  socket.on('dataStream', function(data){
+    console.log('dataStream' + data.users);
+    let users = data.users;
+    let pos = createVector();
+    for(user of users){
+      pos.x = user.x;
+      pos.y = user.y;
+      drawUsers(user.id, pos, user.dia);
+    }
   });
 }
 
 function mouseMove(){
-  socket.emit('data',function(){
+  socket.emit('newPosition',function(){
     let pos = {
       x: mouseX,
       y: mouseY
@@ -26,8 +33,11 @@ function mouseMove(){
   });
 }
 
-function drawPos(pos, dia){
-  console.log('dataStream' + dataStream);
-  fill(0);
+function drawUsers(id, pos, dia){
+  if(id == socket.id){
+    fill(120);
+  }else{
+    fill(0);
+  }
   ellipse(pos.x, pos.y, dia, dia);
 }
