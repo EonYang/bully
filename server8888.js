@@ -19,12 +19,12 @@ var web = io.of('/');
 
 web.on('connection', function(socket) {
   //listen to player connect, if call, create new user;
-  console.log(`An player ${socket.id} connected`);
+  // console.log(`An player ${socket.id} connected`);
   users.push(new USER(socket.id));
 
   //listen to disconnect, if call, delete the user;
   socket.on('disconnect', function() {
-    console.log(`An output client ${socket.id} has disconnected`);
+    // console.log(`An output client ${socket.id} has disconnected`);
   });
 });
 
@@ -39,7 +39,7 @@ function sendData() {
 setInterval(sendData, 33);
 
 function Logs() {
-  console.log(users);
+  // console.log(users);
   // console.log(groups);
 
 }
