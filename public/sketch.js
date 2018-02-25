@@ -18,8 +18,9 @@ function setup(){
     for(user of users){
       pos.x = user.x;
       pos.y = user.y;
-      drawUsers(user.id, pos, user.dia);
+      drawUsers(user.id, pos, user.r);
     }
+
   });
 }
 function draw(){
@@ -27,19 +28,23 @@ function draw(){
 }
 function mouseMoved(){
   console.log("mousedMoved");
+
   let pos = {
     x: mouseX,
     y: mouseY
   }
+  // createDiv("socket id:" +socket.id +  "pos "+ pos);
   socket.emit('newPosition',pos);
 }
 
-function drawUsers(id, pos, dia){
+function drawUsers(id, pos, r){
+  // background(255);
   if(id == socket.id){
     fill(225);
-
+    // createDiv("socket id:" +socket.id +  "pos "+ pos);
   }else{
     fill(0);
   }
-  ellipse(pos.x, pos.y, dia, dia);
+
+  ellipse(pos.x, pos.y, r, r);
 }
