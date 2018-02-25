@@ -30,6 +30,16 @@ class USER {
     }
   }
 
+  Explode() {
+    this.x = Math.floor(Math.random() * config.canvas.x);
+    this.y = Math.floor(Math.random() * config.canvas.y);
+    this.destination = {
+      x: this.x,
+      y: this.y
+    }
+    this.inGroup = 0;
+  }
+
   Restart() {
     this.x = Math.floor(Math.random() * config.canvas.x);
     this.y = Math.floor(Math.random() * config.canvas.y);

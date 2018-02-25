@@ -1,193 +1,270 @@
 const USER = require('./user.js');
 const GROUP = require('./group.js');
 const config = require('../config.js');
+const tool = require('./tool.js');
 
 class GAME {
-  constructor() {}
+  constructor() {
+    // *** 1 hit 1
+    this.groupToCreate = [
+      //obj, {user1, user2}
+    ];
 
-  AddMoreMember(user, group) {
-    // if a user collided a 2 member group, he will be added to this group;
-    let a = user.x - group.x;
-    let b = user.y - group.y;
-    let r2 = user.r + group.r;
-    if (Math.sqrt(a * a + b * b) < r2) {
-      group.AddMember(user);
-      user.inGroup = 1;
-      console.log(`group ${group.name} added a member`);
-    }
+    // *** 1 hit 2
+    this.groupToAddMember = [
+      //obj, {group, user3}
+    ]
+
+    // *** 1 hit 3, 2 hit 3
+    this.userToDie = [
+      //obj, users
+    ]
+
+    this.userToAddScore = [
+      //obj, users
+    ]
+
+    // 2 hit 2, 3 hit 3
+    this.groupToExplode = [
+      //obj, groups
+    ]
+
+    // *** user get fa away from group
+    this.userToLeaveGroup = [
+      //obj, {group users}
+    ]
+
+    // *** member less than 2
+    this.groupToDismiss = [
+      //obj, group,
+    ];
   }
 
-  Bully3v2(bigGroup, smallGroup, users) {
-    let a = bigGroup.x - smallGroup.x;
-    let b = bigGroup.y - smallGroup.y;
-    let r2 = bigGroup.r + smallGroup.r;
-    if (Math.sqrt(a * a + b * b) < r2) {
-      for (let g = 0; g < bigGroup.users.length; g++) {
-        for (let u = 0; u < users.length; u++) {
-          if (users[u].inGroup && users[u].id === bigGroup.users[g].id) {
-            users[u].kill += 1;
-          }
-        }
-      }
-
-      for (let g = 0; g < smallGroup.users.length; g++) {
-        for (let u = 0; u < users.length; u++) {
-          if (users[u].inGroup && users[u].id === smallGroup.users[g].id) {
-            users[u].die += 1;
-            users[u].isAlive = 0;
-          }
-        }
-      }
-      console.log('A group added a member');
-    }
+  CreateGroup(user1, user2) {
+    this.groupToCreate.push({user1: user1, user2: user2})
   }
 
-  Bully3v1(bigGroup, person, users) {
-    let a = bigGroup.x - person.x;
-    let b = bigGroup.y - person.y;
-    let r2 = bigGroup.r + person.r;
-    if (Math.sqrt(a * a + b * b) < r2) {
-      for (let g = 0; g < bigGroup.users.length; g++) {
-        for (let u = 0; u < users.length; u++) {
-          if (users[u].inGroup === 1 && users[u].id === bigGroup.users[g].id) {
-            users[u].kill += 1;
-          }
-        }
-      }
-      person.die += 1;
-      person.isAlive = 0;
-    }
+  GroupAddMember(group, user) {
+    this.groupToAddMember.push({group: group, user: user})
   }
 
-  EvenlyMatched(group1, group2, users) {
-    // 3-3 or 2-2, user will be ramdomly distributed to somewhere on the canvas.
-    let a = group1.x - group2.x;
-    let b = group1.y - group2.y;
-    let r2 = group1.r + group2.r;
-    if (Math.sqrt(a * a + b * b) < r2) {
-      for (let g = 0; g < group1.users.length; g++) {
-        for (let u = 0; u < users.length; u++) {
-          if (users[u].inGroup && users[u].id === group1.users[g].id) {
-            users[u].Restart();
-          }
-        }
-      }
-      for (let g = 0; g < group2.users.length; g++) {
-        for (let u = 0; u < users.length; u++) {
-          if (users[u].inGroup && users[u].id === group2.users[g].id) {
-            users[u].Restart();
-          }
-        }
-      }
-      // console.log(Math.sqrt(a * a + b * b), r2);
+  Bully3v1(group, user) {
+    for (var i = 0; i < group.users.length; i++) {
+      this.userToAddScore.push(group.users[i]);
     }
+    this.userToDie.push(user);
+  };
+
+  Bully3v2(group3, group2) {
+    for (var i = 0; i < group3.users.length; i++) {
+      this.userToAddScore.push(group3.users[i]);
+    }
+    for (var i = 0; i < group2.users.length; i++) {
+      this.userToDie.push(group2.users[i]);
+    }
+    this.groupToExplode.push(group2);
+  };
+
+  EvenlyMatched(groupA, groupB) {
+    this.groupToExplode.push(groupA);
+    this.groupToExplode.push(groupB);
+  };
+
+  MemberLeaveGroup(group, user) {
+    this.userToLeaveGroup.push({group: group, user: user});
+  };
+
+  DeleteGroup(group) {
+    this.groupToDismiss.push(group);
   }
 
-  //this function need to be in game loop
-  CreateGroup(users, groups) {
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].isAlive && !users[i].inGroup) {
-        for (let k = 0; k < users.length; k++) {
-          // if 2 users who are not belong to any group collided, new group formed.
-          if (i != k && !users[k].inGroup) {
-            let a = users[i].x - users[k].x;
-            let b = users[i].y - users[k].y;
-            let r2 = users[i].r + users[k].r;
-            if (Math.sqrt(a * a + b * b) < r2) {
-              groups.push(new GROUP(users[i], users[k]));
-              users[i].inGroup = 1;
-              users[k].inGroup = 1;
-              console.log('new Group Formed');
+  // CheckEveryFrame
+  UserHitsUser(users) {
+    for (var i = 0; i < users.length; i++) {
+      for (var k = i + 1; k < users.length; k++) {
+        // console.log('checking user hit user');
+        if (tool.IsHit(users[i], users[k])) {
+          console.log('user hits user!');
+          if (!users[i].inGroup && !users[k].inGroup) {
+            console.log('creating new group');
+            this.CreateGroup(users[i], users[k]);
+          }
+        }
+      }
+    }
+  }
+  // CheckEveryFrame
+  UserHitsGroup(users, groups) {
+    for (var i = 0; i < users.length; i++) {
+      if (!users[i].inGroup) {
+        for (var k = 0; k < groups.length; k++) {
+          // console.log('checking user hit group');
+          if (tool.IsHit(users[i], groups[k])) {
+            switch (groups[k].power) {
+              case 2:
+                this.GroupAddMember(groups[k], users[i]);
+                break;
+              case 3:
+                this.Bully3v1(groups[k], users[i]);
+                break;
+              default:
+                console.log("user hits a group, but group power is invalid");
             }
           }
         }
       }
     }
   }
-
-  //this function need to be in game loop
-  UserLeftGroup(users, groups) {
-    //fetch a group
-    for (let i = 0; i < groups.length; i++) {
-      console.log(groups[i].name);
-      //fetch a user in this group
-      for (let k = 0; k < groups[i].users.length; k++) {
-        //find the index of this user in users, by comparing id
-        let index = users.map(function(e) {
-          return e.id;
-        }).indexOf(groups[i].users[k].id);
-
-        // culculate the distance between this user and this group
-        let a = users[index].x - groups[i].x;
-        let b = users[index].y - groups[i].y;
-        let r2 = users[index].r + groups[i].r;
-        let dist = Math.sqrt(a * a + b * b);
-
-        // if too far away, do something
-        if (dist > r2) {
-          //this user is no longer in a group
-          users[index].inGroup = 0;
-
-          //this group no longer contain this user
-          groups[i].users.splice(k, 1);
-
-          //re culculate some argument of this group
-          groups[i].r = groups[i].users.length * 20;
-          groups[i].power = groups[i].users.length;
-          // done
-        }
-      }
-      // after checking all the users in this group;
-      if (groups[i].users.length === 1) {
-        let index2 = users.map(function(e) {
-          return e.id;
-        }).indexOf(groups[i].users[0].id);
-        users[index2].inGroup = 0;
-        groups.splice[i, 1];
-        break;
-      }
-    }
-  }
-
-  //this function need to be in game loop
-  UserHitGroup(users, groups) {
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].isAlive && !users[i].inGroup) {
-        for (let k = 0; k < groups.length; k++) {
-          if (groups[k].power === 2) {
-            this.AddMoreMember(users[i], groups[k]);
-          } else {
-            this.Bully3v1(groups[k], users[i], users);
+  // CheckEveryFrame
+  GroupHitsGroup(groups) {
+    for (var i = 0; i < groups.length; i++) {
+      for (var k = i; k < groups.length; k++) {
+        // console.log('checking group hit group');
+        if (i != k && tool.IsHit(groups[i], groups[k])) {
+          let powerDiffrence = groups[i].power - groups[k].power;
+          switch (powerDiffrence) {
+            case 1:
+              this.Bully3v2(groups[i], groups[k]);
+              break;
+            case 0:
+              this.EvenlyMatched(groups[i], groups[k]);
+              break;
+            case - 1:
+              this.Bully3v2(groups[k], groups[i]);
+              break;
+            default:
+              console.log("group hits a group, but powerDiffrence is invalid");
           }
         }
       }
     }
   }
-  //this function need to be in game loop
-  GroupHitGroup(users, groups) {
-    for (let i = 0; i < groups.length; i++) {
-      for (let k = 0; k < groups.length; k++) {
-        if (i != k) {
-          if (groups[i].power > groups[k].power) {
-            this.Bully3v2(groups[i], groups[k], users);
-          } else if (groups[i].power === groups[k].power) {
-            this.EvenlyMatched(groups[i], groups[k], users);
-            groups.splice[i, 1];
-            groups.splice[k, 1];
-          }
+  // CheckEveryFrame
+  MemberGetsFarAwayFromGroup(groups, users) {
+    for (var i = 0; i < groups.length; i++) {
+      for (var k = 0; k < groups[i].users.length; k++) {
+        let index = tool.FindIndexById(users, groups[i].users[k].id);
+        // console.log(index);
+        // console.log('checking user away group');
+        if (!tool.IsHit(groups[i], users[index])) {
+          this.MemberLeaveGroup(groups[i], users[index])
         }
       }
     }
   }
+  // CheckEveryFrame
+  GroupMemberNotEnough(groups) {
+    for (var i = 0; i < groups.length; i++) {
+      if (groups[i].users.length < 2) {
+        this.DeleteGroup(groups[i]);
+      }
+    }
+  }
 
-  CheckHitAndRunCorrespondingFunction(data) {
+  CheckEveryFrame(data) {
     let users = data.users;
     let groups = data.groups;
-    this.CreateGroup(users, groups);
-    this.UserLeftGroup(users, groups);
-    this.UserHitGroup(users, groups);
-    this.GroupHitGroup(users, groups);
+    this.UserHitsUser(users);
+    this.UserHitsGroup(users, groups);
+    this.GroupHitsGroup(groups);
+    this.MemberGetsFarAwayFromGroup(groups, users);
+    this.GroupMemberNotEnough(groups);
   }
+
+  Excute(data) {
+    // *** 1 hit 1
+    // this.groupToCreate = [
+    //obj, {user1, user2}
+    // ];
+
+    for (var i = 0; i < this.groupToCreate.length; i++) {
+      data.groups.push(new GROUP(this.groupToCreate[i].user1, this.groupToCreate[i].user2));
+      let i1 = tool.FindIndexById(data.users, this.groupToCreate[i].user1.id);
+      let i2 = tool.FindIndexById(data.users, this.groupToCreate[i].user2.id);
+      data.users[i1].inGroup = 1;
+      data.users[i2].inGroup = 1;
+    }
+    this.groupToCreate = [];
+
+    // *** 1 hit 2
+    // this.groupToAddMember = [
+    //obj, {group, user}
+    // ]
+
+    for (var i = 0; i < this.groupToAddMember.length; i++) {
+      let iU = tool.FindIndexById(data.users, this.groupToAddMember[i].user.id);
+      let iG = tool.FindIndexById(data.groups, this.groupToAddMember[i].group.id);
+      data.users[iU].inGroup = 1;
+      data.groups[iG].users.push(data.users[iU]);
+    }
+    this.groupToAddMember = [];
+
+    // *** 1 hit 3, 2 hit 3
+    // this.userToDie = [
+    //obj, users
+    // ]
+    for (var i = 0; i < this.userToDie.length; i++) {
+      let iU = tool.FindIndexById(data.users, this.userToDie[i].id);
+      data.users[iU].isAlive = 0;
+      data.users[iU].die += 1;
+    }
+    this.userToDie = [];
+
+    // this.userToAddScore = [
+    //obj, users
+    // ]
+    for (var i = 0; i < this.userToAddScore.length; i++) {
+      let iU = tool.FindIndexById(data.users, this.userToAddScore[i].id);
+      data.users[iU].kill += 1;
+    }
+    this.userToAddScore = [];
+
+    // 2 hit 2, 3 hit 3
+    // this.groupToExplode = [
+    //obj, groups
+    // ]
+    for (var i = 0; i < this.groupToExplode.length; i++) {
+      for (var k = 0; k < this.groupToExplode[i].users.length; k++) {
+        let iU = tool.FindIndexById(data.users, this.groupToExplode[i].users[k].id);
+        data.users[iU].Explode();
+      }
+    }
+    this.groupToExplode = [];
+
+    // *** user get fa away from group
+    // this.userToLeaveGroup = [
+    //obj, {group user}
+    // ]
+    for (var i = 0; i < this.userToLeaveGroup.length; i++) {
+      let iU = tool.FindIndexById(data.users, this.userToLeaveGroup[i].user.id);
+      let iG = tool.FindIndexById(data.groups, this.userToLeaveGroup[i].group.id);
+      let iUInG = tool.FindIndexById(data.groups[iG].users, this.userToLeaveGroup[i].user.id);
+      data.users[iU].inGroup = 0;
+      data.groups[iG].users.splice(iUInG, 1);
+    }
+    this.userToLeaveGroup = [];
+
+    // *** member less than 2
+    // this.groupToDismiss = [
+    //obj, group,
+    // ];
+    for (var i = 0; i < this.groupToDismiss.length; i++) {
+      let index = tool.FindIndexById(data.groups, this.groupToDismiss[i].id);
+      switch (data.groups[index].users.length) {
+        case 0:
+          data.groups.splice(index, 1);
+          break;
+
+        case 1:
+          let iU = tool.FindIndexById(data.users, data.groups[index].users[0].id);
+          data.users[iU].inGroup = 0;
+          data.groups.splice(index, 1);
+          break;
+      }
+    }
+    this.groupToDismiss = [];
+  }
+
 }
 
 module.exports = GAME;

@@ -2,26 +2,24 @@ var USER = require('./src/user.js');
 var GROUP = require('./src/group.js');
 var GAME = require('./src/game_control.js');
 var config = require('./config.js');
+var express = require('express');
+var port = 8888;
+var app = express();
+app.use(express.static('public'));
+var server = require('http').createServer(app).listen(port, function() {
+  console.log(`server on ${port}`);
+});
+var io = require('socket.io').listen(server);
+
+var game = new GAME();
+
 let data = {
   users: [],
   groups: []
 };
-
-var express = require('express');
-var port = 8888;
-var app = express();
-var server = require('http').createServer(app).listen(port, function() {
-  console.log(`server on ${port}`);
-});
-
-var game = new GAME();
-
-var io = require('socket.io').listen(server);
-
-app.use(express.static('public'));
+let userToDelete = [];
 
 var web = io.of('/');
-
 web.on('connection', function(socket) {
   console.log(`An player ${socket.id} connected`);
   data.users.push(new USER(socket.id));
@@ -40,24 +38,25 @@ web.on('connection', function(socket) {
   });
   //listen to disconnect, if call, delete the user;
   socket.on('disconnect', function() {
-    for (let i = 0; i < data.users.length; i++) {
-      if (data.users[i].id === socket.id) {
-        data.users.splice(i, 1);
-        console.log(`%{data.users[i].id} left game`);
-        break;
-      }
-    }
+    userToDelete.push(socket.id);
   });
 });
 
 function sendData() {
+  // delete user who have left game
+  // for (var i = 0; i < userToDelete.length; i++) {
+  //   // game.DeleteUser(userToDelete[i], data.users, data.groups);
+  //   userToDelete.splice[i];
+  // }
   for (let i = 0; i < data.users.length; i++) {
     data.users[i].Update();
   }
+  game.CheckEveryFrame(data);
+  game.Excute(data);
   for (let i = 0; i < data.groups.length; i++) {
-    data.groups[i].Move(data.users);
+    data.groups[i].Update(data.users);
   }
-  game.CheckHitAndRunCorrespondingFunction(data);
+  // game.CheckHitAndRunCorrespondingFunction(data);
   web.emit('dataStream', data);
 }
 
@@ -70,11 +69,11 @@ function Logs() {
 setInterval(Logs, 3000);
 
 function testData() {
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 8; i++) {
     data.users.push(new USER(i.toString()));
   }
-  console.log('Created 3 users');
-  data.groups.push(new GROUP(data.users[1], data.users[2]));
+  console.log('Created 8 users');
+  data.groups.push(new GROUP(data.users[2], data.users[5]))
 }
 
 testData();

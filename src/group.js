@@ -1,4 +1,5 @@
 var config = require('../config.js');
+const tool = require('./tool.js');
 
 class GROUP {
 
@@ -12,37 +13,26 @@ class GROUP {
     this.r = this.users.length * 20;
     this.power = this.users.length;
     this.name = names.split("")[Math.floor(Math.random() * 25)];
+    this.id = tool.CreateId();
   }
 
   AddMember(user3) {
     this.users.push(user3);
-    this.r = this.users.length * 20;
-    this.power = this.users.length;
   }
 
-  // DeleteMember(user) {
-  //   for (var i = 0; i < this.users.length; i++) {
-  //     if (user.id === this.users[i].id) {
-  //       this.users.splice(i, 1);
-  //       this.r = this.users.length * 20;
-  //       this.power = this.users.length;
-  //     }
-  //   }
-  // }
 
-  Move(allusers) {
+  Update(allusers) {
     let middleX = 0;
     let middleY = 0;
     for (let i = 0; i < this.users.length; i++) {
-      for (let k = 0; k < allusers.length; k++) {
-        if (this.users[i].id === allusers[k].id) {
-          middleX += allusers[k].x;
-          middleY += allusers[k].y;
-        }
-      }
+      let index = tool.FindIndexById(allusers, this.users[i].id);
+      middleX += allusers[index].x;
+      middleY += allusers[index].y;
     }
     this.x = middleX / this.users.length;
     this.y = middleY / this.users.length;
+    this.r = this.users.length * 20;
+    this.power = this.users.length;
   }
 }
 
