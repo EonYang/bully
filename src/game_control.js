@@ -5,55 +5,6 @@ const config = require('../config.js');
 class GAME {
   constructor() {}
 
-  CreateGroup(users, groups) {
-    for (let i = 0; i < users.length; i++) {
-      if (!users[i].inGroup) {
-        for (let k = 0; k < users.length; k++) {
-          // if 2 users who are not belong to any group collided, new group formed.
-          if (i != k && !users[k].inGroup) {
-            let a = users[i].x - users[k].x;
-            let b = users[i].y - users[k].y;
-            let r2 = users[i].r + users[k].r;
-            if (Math.sqrt(a * a + b * b) < r2) {
-              groups.push(new GROUP(users[i].id, users[k].id));
-              users[i].inGroup = 1;
-              users[k].inGroup = 1;
-              console.log('new Group Formed');
-            }
-          }
-        }
-      }
-    }
-  }
-
-  UserHitGroup(users, groups) {
-    for (let i = 0; i < users.length; i++) {
-      if (!users[i].inGroup) {
-        for (let k = 0; k < groups.length; k++) {
-          if (groups[k].power === 2) {
-            AddMoreMember(users[i], groups[k]);
-          } else {
-            Bully3v1(groups[k], users[i]);
-          }
-        }
-      }
-    }
-  }
-
-  GroupHitGroup(groups) {
-    for (var i = 0; i < groups.length; i++) {
-      for (var k = 0; k < groups.length; k++) {
-        if (i != k) {
-          if (groups[i].power > group[k].power) {
-            Bully3v2(groups[i], groups[k]);
-          } else if (groups[i].power === group[k].power) {
-            EvenlyMatched(groups[i], groups[k]);
-          }
-        }
-      }
-    }
-  }
-
   AddMoreMember(user, group) {
     // if a user collided a 2 member group, he will be added to this group;
     let a = user.x - group.x;
@@ -106,6 +57,55 @@ class GAME {
         group2.users.Restart();
       }
       console.log('EvenlyMatched');
+    }
+  }
+
+  CreateGroup(users, groups) {
+    for (let i = 0; i < users.length; i++) {
+      if (!users[i].inGroup) {
+        for (let k = 0; k < users.length; k++) {
+          // if 2 users who are not belong to any group collided, new group formed.
+          if (i != k && !users[k].inGroup) {
+            let a = users[i].x - users[k].x;
+            let b = users[i].y - users[k].y;
+            let r2 = users[i].r + users[k].r;
+            if (Math.sqrt(a * a + b * b) < r2) {
+              groups.push(new GROUP(users[i].id, users[k].id));
+              users[i].inGroup = 1;
+              users[k].inGroup = 1;
+              console.log('new Group Formed');
+            }
+          }
+        }
+      }
+    }
+  }
+
+  UserHitGroup(users, groups) {
+    for (let i = 0; i < users.length; i++) {
+      if (!users[i].inGroup) {
+        for (let k = 0; k < groups.length; k++) {
+          if (groups[k].power === 2) {
+            AddMoreMember(users[i], groups[k]);
+          } else {
+            Bully3v1(groups[k], users[i]);
+          }
+        }
+      }
+    }
+  }
+
+  GroupHitGroup(groups) {
+    for (var i = 0; i < groups.length; i++) {
+      for (var k = 0; k < groups.length; k++) {
+        if (i != k) {
+          if (groups[i].power > group[k].power) {
+            Bully3v2(groups[i], groups[k]);
+          } else if (groups[i].power === group[k].power) {
+            EvenlyMatched(groups[i], groups[k]);
+          }
+        }
+      }
     }
   }
 }
