@@ -3,8 +3,8 @@ var GROUP = require('./src/group.js');
 var GAME = require('./src/game_control.js');
 var config = require('./config.js');
 let data = {
-  users:[],
-  groups:[]
+  users: [],
+  groups: []
 };
 
 var express = require('express');
@@ -26,7 +26,7 @@ web.on('connection', function(socket) {
   console.log(`An player ${socket.id} connected`);
   data.users.push(new USER(socket.id));
 
-  socket.on("newPosition", function (newData) {
+  socket.on("newPosition", function(newData) {
     // console.log(newData);
     for (let i = 0; i < data.users.length; i++) {
       if (data.users[i].id === socket.id) {
@@ -42,7 +42,7 @@ web.on('connection', function(socket) {
   socket.on('disconnect', function() {
     for (let i = 0; i < data.users.length; i++) {
       if (data.users[i].id === socket.id) {
-        data.users.splice(i,1);
+        data.users.splice(i, 1);
         console.log(`%{data.users[i].id} left game`);
         break;
       }
@@ -59,7 +59,7 @@ function sendData() {
   for (let i = 0; i < data.groups.length; i++) {
     data.groups[i].Move(data.users);
   }
-  game.CreateGroup(data.users,data.groups);
+  game.CheckHitAndRunCorrespondingFunction(data);
   web.emit('dataStream', data);
 }
 
@@ -76,8 +76,8 @@ function testData() {
     data.users.push(new USER(i.toString()));
   }
   console.log('Created 3 users');
-  data.groups.push(new GROUP('1', '2'));
-  data.groups.push(new GROUP('5', '3'));
+  data.groups.push(new GROUP(data.users[1],data.users[2]));
+  data.groups.push(new GROUP(data.users[5],data.users[3]));
 }
 
 testData();
