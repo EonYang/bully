@@ -15,8 +15,8 @@ class USER {
     this.die = 0;
     this.lastSprintTime = 0;
     this.destination = {
-    x: this.x,
-    y: this.y
+      x: this.x,
+      y: this.y
     }
     this.inGroup = 0;
   }
@@ -28,6 +28,17 @@ class USER {
     if (this.y != this.destination.y) {
       this.y += (this.destination.y - this.y) * this.speed;
     }
+  }
+
+  Restart() {
+    this.x = Math.floor(Math.random() * config.canvas.x);
+    this.y = Math.floor(Math.random() * config.canvas.y);
+    this.destination = {
+      x: this.x,
+      y: this.y
+    }
+    this.inGroup = 0;
+    this.isAlive = 1;
   }
 
   Sprint() {

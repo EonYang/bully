@@ -73,11 +73,11 @@ setInterval(Logs, 3000);
 
 function testData() {
   for (let i = 0; i < 6; i++) {
-    data.users.push(new USER(i));
+    data.users.push(new USER(i.toString()));
   }
   console.log('Created 3 users');
   data.groups.push(new GROUP('1', '2'));
-  data.groups.push(new GROUP('5', '6'));
+  data.groups.push(new GROUP('5', '3'));
 }
 
 testData();
