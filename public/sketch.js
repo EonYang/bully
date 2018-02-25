@@ -2,6 +2,8 @@ let socket = io();
 let groupsColors= [];
 let myColor;
 let statsDiv;
+let amIAlive = 1;
+
 function setup(){
   createCanvas(640, 640);
   statsDiv = document.getElementById('game-stats');
@@ -18,6 +20,7 @@ function setup(){
   socket.on('dataStream', function(data){
     console.log('dataStream' + data.users);
     let users = data.users;
+
     drawUsers(users);
     showStats(users);
     // let pos = createVector();
@@ -33,14 +36,19 @@ function setup(){
 }
 function draw(){
 
+
 }
 function mouseMoved(){
-  console.log("mousedMoved");
-  let pos = {
-    x: mouseX,
-    y: mouseY
+  if(amIAlive){
+    console.log("mousedMoved");
+    let pos = {
+      x: mouseX,
+      y: mouseY
+    }
+    socket.emit('newPosition',pos);
+  }else{
+    console.log("I am dead, and can't draw stuff :(");
   }
-  socket.emit('newPosition',pos);
 }
 function randomColor(){
 
@@ -52,18 +60,21 @@ function drawUsers(users){
   for(user of users){
     if(user.id == socket.id){
       // fill(255, 0, 255);
+      amIAlive = user.isAlive;
       fill(myColor);
     }else{
       fill(0);
     }
-    ellipse(user.x, user.y, user.r, user.r);
+    if(user.isAlive){
+      ellipse(user.x, user.y, user.r*2, user.r*2);
+    }
   }
 }
 
 function drawGroups(groups){
   for(group of groups){
     fill(200, 30);
-    ellipse(group.x, group.y, group.r, group.r);
+    ellipse(group.x, group.y, group.r*2, group.r*2);
   }
 }
 
