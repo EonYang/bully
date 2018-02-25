@@ -20,6 +20,7 @@ function setup(){
       pos.y = user.y;
       drawUsers(user.id, pos, user.r);
     }
+    
   });
 }
 function draw(){
@@ -35,11 +36,12 @@ function mouseMoved(){
 }
 
 function drawUsers(id, pos, r){
-  background(255);
+  // background(255);
   if(id == socket.id){
     fill(225);
   }else{
     fill(0);
   }
+
   ellipse(pos.x, pos.y, r, r);
 }

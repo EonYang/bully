@@ -41,7 +41,8 @@ web.on('connection', function(socket) {
 
   //listen to disconnect, if call, delete the user;
   socket.on('disconnect', function() {
-    // console.log(`An output client ${socket.id} has disconnected`);
+    console.log(`An output client ${socket.id} has disconnected`);
+    data.users.splice(socket.id, 1);
   });
 });
 
