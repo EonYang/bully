@@ -23,17 +23,17 @@ class USER {
 
   Update() {
     if (this.x != this.destination.x) {
-      this.x += (this.destination.x - this.x) * this.speed ;
+      this.x += (this.destination.x - this.x) * this.speed;
     }
     if (this.y != this.destination.y) {
-      this.y += (this.destination.y - this.y) * this.speed ;
+      this.y += (this.destination.y - this.y) * this.speed;
     }
   }
 
   Sprint() {
     let now = new Date().getTime();
     if ((now - this.lastSprintTime) >= 15000) {
-      this.speed += 3;
+      this.speed *= 1.4;
       setTimeout(function() {
         this.speed = config.defaultSpeed;
       }, 3000);
