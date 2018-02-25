@@ -1,8 +1,9 @@
 let socket = io();
-// let myColor = 255, 0, 255;
+let groupsColors= [];
+let myColor;
 function setup(){
   createCanvas(640, 640);
-
+  myColor = color(204, 102, 0);
   socket.on('connect', function(){
     console.log("I am connected: " + socket.id);
   });
@@ -37,24 +38,27 @@ function mouseMoved(){
   }
   socket.emit('newPosition',pos);
 }
+function randomColor(){
 
+  return color;
+}
 function drawUsers(users){
+  background(255);
   let pos = createVector();
   for(user of users){
     if(user.id == socket.id){
-      fill(255, 0, 255);
+      // fill(255, 0, 255);
+      fill(myColor);
     }else{
       fill(0);
     }
     ellipse(user.x, user.y, user.r, user.r);
   }
-  // background(255);
 }
 
 function drawGroups(groups){
-  // let groupcolors = ["#333", "#898", "#457"];
   for(group of groups){
-    fill(random(255));
-    ellipse(group.x, group.y, group.r);
+    fill(200, 30);
+    ellipse(group.x, group.y, group.r, group.r);
   }
 }
