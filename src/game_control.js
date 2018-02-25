@@ -83,7 +83,7 @@ class GAME {
     for (var i = 0; i < users.length; i++) {
       for (var k = i + 1; k < users.length; k++) {
         // console.log('checking user hit user');
-        if (tool.IsHit(users[i], users[k])) {
+        if (users[i].isAlive && users[k].isAlive && tool.IsHit(users[i], users[k])) {
           console.log('user hits user!');
           if (!users[i].inGroup && !users[k].inGroup) {
             console.log('creating new group');
@@ -96,7 +96,7 @@ class GAME {
   // CheckEveryFrame
   UserHitsGroup(users, groups) {
     for (var i = 0; i < users.length; i++) {
-      if (!users[i].inGroup) {
+      if (!users[i].inGroup & users[i].isAlive) {
         for (var k = 0; k < groups.length; k++) {
           // console.log('checking user hit group');
           if (tool.IsHit(users[i], groups[k])) {
