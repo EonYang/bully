@@ -6,9 +6,9 @@ class GAME {
   constructor() {}
 
   CreateGroup(users, groups) {
-    for (var i = 0; i < users.length; i++) {
+    for (let i = 0; i < users.length; i++) {
       if (!users[i].inGroup) {
-        for (var k = 0; k < users.length; k++) {
+        for (let k = 0; k < users.length; k++) {
           if (i != k && !users[k].inGroup) {
             let a = users[i].x - users[k].x;
             let b = users[i].y - users[k].y;
@@ -26,8 +26,22 @@ class GAME {
     // if 2 users who are not belong to any group collided, new group formed.
   }
 
-  AddMoreMember() {
+  AddMoreMember(users, groups) {
     // if a user collided a 2 member group, he will be added to this group;
+    for (let i = 0; i < users.length; i++) {
+      if (!users[i].inGroup) {
+        for (let k = 0; k < groups.length; k++) {
+          let a = users[i].x - groups[k].x;
+          let b = users[i].y - groups[k].y;
+          let r2 = users[i].r + groups[k].r;
+          if (Math.sqrt(a * a + b * b) < r2) {
+            group[k].AddMember(users[i].id);
+            users[i].inGroup = 1;
+            console.log('A group added a member');
+          }
+        }
+      }
+    }
   }
 
   Bully() {

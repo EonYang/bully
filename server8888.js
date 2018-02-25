@@ -28,7 +28,7 @@ web.on('connection', function(socket) {
 
   socket.on("newPosition", function (newData) {
     // console.log(newData);
-    for (var i = 0; i < data.users.length; i++) {
+    for (let i = 0; i < data.users.length; i++) {
       if (data.users[i].id === socket.id) {
         data.users[i].destination = {
           x: newData.x,
@@ -38,7 +38,6 @@ web.on('connection', function(socket) {
       }
     }
   });
-
   //listen to disconnect, if call, delete the user;
   socket.on('disconnect', function() {
     // console.log(`An output client ${socket.id} has disconnected`);
@@ -46,8 +45,11 @@ web.on('connection', function(socket) {
 });
 
 function sendData() {
-  for (var i = 0; i < data.users.length; i++) {
+  for (let i = 0; i < data.users.length; i++) {
     data.users[i].Update();
+  }
+  for (let i = 0; i < data.groups.length; i++) {
+    data.groups[i].Move(data.users);
   }
   game.CreateGroup(data.users,data.groups);
   web.emit('dataStream', data);
@@ -56,13 +58,13 @@ function sendData() {
 setInterval(sendData, 33);
 
 function Logs() {
-  // console.log(data);
+  console.log(data);
 }
 
-// setInterval(Logs, 3000);
+setInterval(Logs, 3000);
 
 function testData() {
-  for (var i = 0; i < 6; i++) {
+  for (let i = 0; i < 6; i++) {
     data.users.push(new USER(i));
   }
   console.log('Created 3 users');
