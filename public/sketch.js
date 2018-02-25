@@ -22,23 +22,22 @@ function setup(){
     }
   });
 }
-
 function draw(){
 
-};
-
+}
 function mouseMoved(){
+  console.log("mousedMoved");
   let pos = {
     x: mouseX,
     y: mouseY
   }
   socket.emit('newPosition',pos);
-  console.log('mousemoved');
 }
 
 function drawUsers(id, pos, dia){
   if(id == socket.id){
-    fill(120);
+    fill(225);
+
   }else{
     fill(0);
   }
