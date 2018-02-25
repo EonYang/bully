@@ -6,7 +6,7 @@ let data = {
   users:[],
   groups:[]
 };
-// let groups = require('./src/game_control.js');
+
 var express = require('express');
 var port = 8888;
 var app = express();
@@ -40,6 +40,14 @@ web.on('connection', function(socket) {
   });
   //listen to disconnect, if call, delete the user;
   socket.on('disconnect', function() {
+    for (let i = 0; i < data.users.length; i++) {
+      if (data.users[i].id === socket.id) {
+        data.users.splice(i,1);
+        console.log(`%{data.users[i].id} left game`);
+        break;
+      }
+    }
+
     // console.log(`An output client ${socket.id} has disconnected`);
   });
 });
