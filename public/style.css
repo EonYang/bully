@@ -1,0 +1,36 @@
+body{
+  font-size: 16px;
+}
+h1, h3{
+  font-family: 'Unica One', cursive;
+  margin: 0;
+}
+h1{
+  font-size: 4em;
+  margin-bottom: 10px;
+}
+h3{
+  font-size: 2em;
+}
+p{
+  font-family: 'Karla', sans-serif;
+  font-size: 1em;
+  margin: 0;
+}
+#defaultCanvas0{
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 10px;
+}
+#game-container{
+  display: inline-block;
+  margin-left: 700px;
+}
+#user-input{
+  margin-top: 10px;
+}
+#user-input input[type="text"]{
+  padding: 10px;
+  font-size: 1.5em;
+}

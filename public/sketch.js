@@ -1,8 +1,11 @@
 let socket = io();
 let groupsColors= [];
 let myColor;
+let statsDiv;
 function setup(){
   createCanvas(640, 640);
+  statsDiv = document.getElementById('game-stats');
+  // console.log(statsDiv);
   myColor = color(204, 102, 0);
   socket.on('connect', function(){
     console.log("I am connected: " + socket.id);
@@ -16,6 +19,7 @@ function setup(){
     console.log('dataStream' + data.users);
     let users = data.users;
     drawUsers(users);
+    showStats(users);
     // let pos = createVector();
     // for(user of users){
     //   pos.x = user.x;
@@ -60,5 +64,12 @@ function drawGroups(groups){
   for(group of groups){
     fill(200, 30);
     ellipse(group.x, group.y, group.r, group.r);
+  }
+}
+
+function showStats(users){
+  statsDiv.innerHTML = "";
+  for(user of users){
+    statsDiv.innerHTML += "<p>"+user.id+" "+user.name+":  "+user.kill+" </p>"
   }
 }
