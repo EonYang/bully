@@ -23,10 +23,14 @@ class USER {
 
   Update() {
     if (this.x != this.destination.x) {
-      this.x += (this.destination.x - this.x) * this.speed ;
+      // this.x += (this.destination.x - this.x) * this.speed ;
+      this.x += (this.destination.x - this.x);
+
     }
     if (this.y != this.destination.y) {
-      this.y += (this.destination.y - this.y) * this.speed ;
+      // this.y += (this.destination.y - this.y) * this.speed ;
+      this.y += (this.destination.y - this.y);
+
     }
   }
 
