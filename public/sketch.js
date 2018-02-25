@@ -26,18 +26,18 @@ function draw(){
 
 }
 function mouseMoved(){
-  socket.emit('newPosition',function(){
-    let pos = {
-      x: mouseX,
-      y: mouseY
-    }
-    return pos;
-  });
+  console.log("mousedMoved");
+  let pos = {
+    x: mouseX,
+    y: mouseY
+  }
+  socket.emit('newPosition',pos);
 }
 
 function drawUsers(id, pos, dia){
   if(id == socket.id){
     fill(225);
+
   }else{
     fill(0);
   }
