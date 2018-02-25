@@ -20,15 +20,15 @@ class GROUP {
     this.power = this.users.length;
   }
 
-  DeleteMember(user) {
-    for (var i = 0; i < this.users.length; i++) {
-      if (user.id === this.users[i].id) {
-        this.users.splice(i, 1);
-        this.r = this.users.length * 20;
-        this.power = this.users.length;
-      }
-    }
-  }
+  // DeleteMember(user) {
+  //   for (var i = 0; i < this.users.length; i++) {
+  //     if (user.id === this.users[i].id) {
+  //       this.users.splice(i, 1);
+  //       this.r = this.users.length * 20;
+  //       this.power = this.users.length;
+  //     }
+  //   }
+  // }
 
   Move(allusers) {
     let middleX = 0;

@@ -14,7 +14,6 @@ class GAME {
       group.AddMember(user);
       user.inGroup = 1;
       console.log(`group ${group.name} added a member`);
-
     }
   }
 
@@ -25,7 +24,7 @@ class GAME {
     if (Math.sqrt(a * a + b * b) < r2) {
       for (let g = 0; g < bigGroup.users.length; g++) {
         for (let u = 0; u < users.length; u++) {
-          if (users[u].inGroup === 1 && users[u].id === bigGroup.users[g].id) {
+          if (users[u].inGroup && users[u].id === bigGroup.users[g].id) {
             users[u].kill += 1;
           }
         }
@@ -33,13 +32,12 @@ class GAME {
 
       for (let g = 0; g < smallGroup.users.length; g++) {
         for (let u = 0; u < users.length; u++) {
-          if (users[u].inGroup === 1 && users[u].id === smallGroup.users[g].id) {
+          if (users[u].inGroup && users[u].id === smallGroup.users[g].id) {
             users[u].die += 1;
             users[u].isAlive = 0;
           }
         }
       }
-
       console.log('A group added a member');
     }
   }
@@ -69,14 +67,14 @@ class GAME {
     if (Math.sqrt(a * a + b * b) < r2) {
       for (let g = 0; g < group1.users.length; g++) {
         for (let u = 0; u < users.length; u++) {
-          if (users[u].inGroup === 1 && users[u].id === group1.users[g].id) {
+          if (users[u].inGroup && users[u].id === group1.users[g].id) {
             users[u].Restart();
           }
         }
       }
       for (let g = 0; g < group2.users.length; g++) {
         for (let u = 0; u < users.length; u++) {
-          if (users[u].inGroup === 1 && users[u].id === group2.users[g].id) {
+          if (users[u].inGroup && users[u].id === group2.users[g].id) {
             users[u].Restart();
           }
         }
@@ -88,7 +86,7 @@ class GAME {
   //this function need to be in game loop
   CreateGroup(users, groups) {
     for (let i = 0; i < users.length; i++) {
-      if (!users[i].inGroup) {
+      if (users[i].isAlive && !users[i].inGroup) {
         for (let k = 0; k < users.length; k++) {
           // if 2 users who are not belong to any group collided, new group formed.
           if (i != k && !users[k].inGroup) {
@@ -109,19 +107,44 @@ class GAME {
 
   //this function need to be in game loop
   UserLeftGroup(users, groups) {
-    for (let g = 0; g < groups.length; g++) {
-      for (let gu = 0; gu < groups[g].users.length; gu++) {
-        for (let u = 0; u < users.length; u++) {
-          if (users[u].inGroup === 1 && users[u].id === groups[g].users[gu].id) {
-            let a = users[u].x - groups[g].x;
-            let b = users[u].y - groups[g].y;
-            let r2 = users[u].r + groups[g].r;
-            if (Math.sqrt(a * a + b * b) < r2) {
-              groups[g].DeleteMember(users[u]);
-              users[u].LeaveGroup();
-            }
-          }
+    //fetch a group
+    for (let i = 0; i < groups.length; i++) {
+      console.log(groups[i].name);
+      //fetch a user in this group
+      for (let k = 0; k < groups[i].users.length; k++) {
+        //find the index of this user in users, by comparing id
+        let index = users.map(function(e) {
+          return e.id;
+        }).indexOf(groups[i].users[k].id);
+
+        // culculate the distance between this user and this group
+        let a = users[index].x - groups[i].x;
+        let b = users[index].y - groups[i].y;
+        let r2 = users[index].r + groups[i].r;
+        let dist = Math.sqrt(a * a + b * b);
+
+        // if too far away, do something
+        if (dist > r2) {
+          //this user is no longer in a group
+          users[index].inGroup = 0;
+
+          //this group no longer contain this user
+          groups[i].users.splice(k, 1);
+
+          //re culculate some argument of this group
+          groups[i].r = groups[i].users.length * 20;
+          groups[i].power = groups[i].users.length;
+          // done
         }
+      }
+      // after checking all the users in this group;
+      if (groups[i].users.length === 1) {
+        let index2 = users.map(function(e) {
+          return e.id;
+        }).indexOf(groups[i].users[0].id);
+        users[index2].inGroup = 0;
+        groups.splice[i, 1];
+        break;
       }
     }
   }
@@ -129,7 +152,7 @@ class GAME {
   //this function need to be in game loop
   UserHitGroup(users, groups) {
     for (let i = 0; i < users.length; i++) {
-      if (!users[i].inGroup) {
+      if (users[i].isAlive && !users[i].inGroup) {
         for (let k = 0; k < groups.length; k++) {
           if (groups[k].power === 2) {
             this.AddMoreMember(users[i], groups[k]);
@@ -149,8 +172,8 @@ class GAME {
             this.Bully3v2(groups[i], groups[k], users);
           } else if (groups[i].power === groups[k].power) {
             this.EvenlyMatched(groups[i], groups[k], users);
-            groups.splice[i,1];
-            groups.splice[k,1];
+            groups.splice[i, 1];
+            groups.splice[k, 1];
           }
         }
       }

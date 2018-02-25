@@ -47,8 +47,6 @@ web.on('connection', function(socket) {
         break;
       }
     }
-
-    // console.log(`An output client ${socket.id} has disconnected`);
   });
 });
 
@@ -72,12 +70,11 @@ function Logs() {
 setInterval(Logs, 3000);
 
 function testData() {
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 3; i++) {
     data.users.push(new USER(i.toString()));
   }
   console.log('Created 3 users');
-  data.groups.push(new GROUP(data.users[1],data.users[2]));
-  data.groups.push(new GROUP(data.users[5],data.users[3]));
+  data.groups.push(new GROUP(data.users[1], data.users[2]));
 }
 
 testData();
