@@ -1,8 +1,9 @@
 let socket = io();
-
+let groupsColors= [];
+let myColor;
 function setup(){
   createCanvas(640, 640);
-
+  myColor = color(204, 102, 0);
   socket.on('connect', function(){
     console.log("I am connected: " + socket.id);
   });
@@ -14,13 +15,16 @@ function setup(){
   socket.on('dataStream', function(data){
     console.log('dataStream' + data.users);
     let users = data.users;
-    let pos = createVector();
-    for(user of users){
-      pos.x = user.x;
-      pos.y = user.y;
-      drawUsers(user.id, pos, user.r);
-    }
-
+    drawUsers(users);
+    // let pos = createVector();
+    // for(user of users){
+    //   pos.x = user.x;
+    //   pos.y = user.y;
+    //   drawUsers(user.id, pos, user.r);
+    // }
+    let groups = data.groups;
+    // createDiv("group: "+data.groups);
+    drawGroups(groups);
   });
 }
 function draw(){
@@ -28,23 +32,33 @@ function draw(){
 }
 function mouseMoved(){
   console.log("mousedMoved");
-
   let pos = {
     x: mouseX,
     y: mouseY
   }
-  // createDiv("socket id:" +socket.id +  "pos "+ pos);
   socket.emit('newPosition',pos);
 }
+function randomColor(){
 
-function drawUsers(id, pos, r){
-  // background(255);
-  if(id == socket.id){
-    fill(225);
-    // createDiv("socket id:" +socket.id +  "pos "+ pos);
-  }else{
-    fill(0);
+  return color;
+}
+function drawUsers(users){
+  background(255);
+  let pos = createVector();
+  for(user of users){
+    if(user.id == socket.id){
+      // fill(255, 0, 255);
+      fill(myColor);
+    }else{
+      fill(0);
+    }
+    ellipse(user.x, user.y, user.r, user.r);
   }
+}
 
-  ellipse(pos.x, pos.y, r, r);
+function drawGroups(groups){
+  for(group of groups){
+    fill(200, 30);
+    ellipse(group.x, group.y, group.r, group.r);
+  }
 }
