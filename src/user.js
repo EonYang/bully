@@ -5,7 +5,7 @@ class USER {
     this.id = id;
     this.name = "Anonymous";
     this.isAlive = 1;
-    this.dia = config.defaultUseDia;
+    this.r = config.defaultUseRadius;
 
     this.x = Math.floor(Math.random() * config.canvas.x);
     this.y = Math.floor(Math.random() * config.canvas.y);
@@ -15,17 +15,18 @@ class USER {
     this.die = 0;
     this.lastSprintTime = 0;
     this.destination = {
-      x: this.x,
-      y: this.y
+    x: this.x,
+    y: this.y
     }
+    this.inGroup = 0;
   }
 
   Update() {
     if (this.x != this.destination.x) {
-      this.x += (this.destination.x - this.x) * this.speed / 100;
+      this.x += (this.destination.x - this.x) * this.speed ;
     }
     if (this.y != this.destination.y) {
-      this.y += (this.destination.y - this.y) * this.speed / 100;
+      this.y += (this.destination.y - this.y) * this.speed ;
     }
   }
 

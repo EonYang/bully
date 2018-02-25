@@ -5,7 +5,7 @@ class GROUP {
     this.users = [user1Id, user2Id];
     this.x = Math.floor(Math.random() * config.canvas.x);
     this.y = Math.floor(Math.random() * config.canvas.y);
-    this.dia = this.users.length * 20;
+    this.r = this.users.length * 20;
     this.power = this.users.length;
   }
 }

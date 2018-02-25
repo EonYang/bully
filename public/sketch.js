@@ -23,14 +23,17 @@ function setup(){
   });
 }
 
-function mouseMove(){
-  socket.emit('newPosition',function(){
-    let pos = {
-      x: mouseX,
-      y: mouseY
-    }
-    return pos;
-  });
+function draw(){
+
+};
+
+function mouseMoved(){
+  let pos = {
+    x: mouseX,
+    y: mouseY
+  }
+  socket.emit('newPosition',pos);
+  console.log('mousemoved');
 }
 
 function drawUsers(id, pos, dia){
