@@ -15,14 +15,14 @@ class GROUP {
     this.power = this.users.length;
   }
 
-  Move(users) {
+  Move(allusers) {
     let middleX = 0;
     let middleY = 0;
     for (let i = 0; i < this.users.length; i++) {
-      for (let k = 0; k < users.length; k++) {
-        if (this.users[i].id === users[k].id) {
-          middleX += users[k].x;
-          middleY += users[k].y;
+      for (let k = 0; k < allusers.length; k++) {
+        if (this.users[i] === allusers[k].id) {
+          middleX += allusers[k].x;
+          middleY += allusers[k].y;
         }
       }
     }
