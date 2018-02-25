@@ -21,6 +21,10 @@ class USER {
     this.inGroup = 0;
   }
 
+  LeaveGroup() {
+    this.inGroup = 0;
+  }
+
   Update() {
     if (this.x != this.destination.x) {
       this.x += (this.destination.x - this.x) * this.speed;
