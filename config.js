@@ -1,6 +1,6 @@
 var config = {
   defaultSpeed : 5,
-  defaultUseDia : 10,
+  defaultUseRadius : 10,
   sprintCoolDownTime : 10,
   canvas : {
     x: 640,
