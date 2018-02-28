@@ -23,15 +23,15 @@ class GAME {
     ];
 
     this.messagesToSend = [
-      { // obj {to who, event, text{title, boddy, duration}}
-        id: 'placeholder',
-        event: 'testMessage',
-        text: {
-          title: 'test title',
-          body: `placeholder`,
-          duration: 1
-        }
-      }
+      // { // obj {to who, event, text{title, boddy, duration}}
+      //   id: 'placeholder',
+      //   event: 'testMessage',
+      //   text: {
+      //     title: 'test title',
+      //     body: `placeholder`,
+      //     duration: 1
+      //   }
+      // }
     ]
 
     // *** 1 hit 1
