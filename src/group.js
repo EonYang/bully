@@ -32,11 +32,12 @@ class GROUP {
       }
       this.x = middleX / this.users.length;
       this.y = middleY / this.users.length;
-      this.r = this.users.length * 20;
-      this.power = this.users.length;
+
     } catch (e) {
       console.log('group update occurs a problem again, but who cares!');
     }
+    this.r = this.users.length * 20;
+    this.power = this.users.length;
 
   }
 }

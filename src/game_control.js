@@ -105,9 +105,8 @@ class GAME {
     this.SendMessage(user.id, 'Go Bully Others!', 'You joined a group, now be a bully!');
     // find the group, tell the two users.
     for (let i = 0; i < group.users.length; i++) {
-      this.SendMessage(group.users[i].id, 'Go Bully Others!', 'Someone joined your group, 3-person group is the bigest group, be a bully!');
+      this.SendMessage(group.users[i].id, 'Go Bully Others!', 'Someone joined your group, 3-person group is the biggest group, be a bully!');
     }
-
   }
 
   Bully3v1(group, user) {
@@ -172,7 +171,7 @@ class GAME {
       for (let k = i + 1; k < users.length; k++) {
         // console.log('checking user hit user');
         if (users[i].isAlive && users[k].isAlive && tool.IsHit(users[i], users[k])) {
-          console.log('user hits user!');
+          // console.log('user hits user!');
           if (!users[i].inGroup && !users[k].inGroup) {
             console.log('creating new group');
             users[i].inGroup = 1;
@@ -190,7 +189,7 @@ class GAME {
         for (let k = 0; k < groups.length; k++) {
           // console.log('checking user hit group');
           if (tool.IsHit(users[i], groups[k])) {
-            switch (groups[k].power) {
+            switch (groups[k].users.length) {
               case 2:
                 users[i].inGroup = 1;
                 this.GroupAddMember(groups[k], users[i]);
@@ -212,7 +211,7 @@ class GAME {
       for (let k = i; k < groups.length; k++) {
         // console.log('checking group hit group');
         if (i != k && tool.IsHit(groups[i], groups[k])) {
-          let powerDiffrence = groups[i].power - groups[k].power;
+          let powerDiffrence = groups[i].users.length - groups[k].users.length;
           switch (powerDiffrence) {
             case 1:
               this.Bully3v2(groups[i], groups[k]);
@@ -349,6 +348,7 @@ class GAME {
   //obj, group,
   // ];
   ExcuteDismissGroup(data) {
+    // console.log(this.groupToDismiss.length);
     for (let i = 0; i < this.groupToDismiss.length; i++) {
       let index = tool.FindIndexById(data.groups, this.groupToDismiss[i].id);
       switch (data.groups[index].users.length) {
@@ -371,8 +371,9 @@ class GAME {
       for (let k = 0; k < data.groups[i].users.length; k++) {
         for (let u = 0; u < this.userToLeaveGame.length; u++) {
           if (data.groups[i].users[k].id === this.userToLeaveGame[u]) {
-            data.groups[i].users.splice[k, 1];
             console.log(`delete user ${data.groups[i].users[k].id} from group ${data.groups[i].id}`);
+            console.log(data.groups[i].users);
+            data.groups[i].users.splice(k, 1);
           }
         }
       }
