@@ -87,7 +87,7 @@ class GAME {
       text: {
         title: title,
         body: body,
-        duration: duration*1000,
+        duration: duration * 1000
       }
     }
     this.messagesToSend.push(message);
@@ -116,7 +116,7 @@ class GAME {
       this.SendMessage(group.users[i].id, `You bullied ${user.name}!`, `Now he/she probably runs his/her butt home`);
     }
     this.userToDie.push(user);
-    this.SendMessage(user.id, `You Got Bullied!`, `${bulliers.toString()} ${this.GetARandomReason()}`);
+    this.SendMessage(user.id, `You Got Bullied!`, `${bulliers.toString()} ${this.GetARandomReason()}`, 10);
   };
 
   Bully3v2(group3, group2) {
@@ -132,7 +132,7 @@ class GAME {
     }
     for (let i = 0; i < group2.users.length; i++) {
       this.userToDie.push(group2.users[i]);
-      this.SendMessage(group2.users[i].id, `You Got Bullied!`, `${bulliers.toString()} ${this.GetARandomReason()}`);
+      this.SendMessage(group2.users[i].id, `You Got Bullied!`, `${bulliers.toString()} ${this.GetARandomReason()}`, 10);
     }
     this.groupToExplode.push(group2);
   };
@@ -149,9 +149,10 @@ class GAME {
   };
 
   MemberLeaveGroup(group, user) {
+    let index;
     this.userToLeaveGroup.push({group: group, user: user});
     for (var i = 0; i < this.groupToExplode.length; i++) {
-      let index = tool.FindIndexById(this.groupToExplode, group.id)
+      index = tool.FindIndexById(this.groupToExplode, group.id)
     }
     if (index === -1) {
       this.SendMessage(user.id, 'You left your clique!', 'Be careful');
@@ -166,8 +167,14 @@ class GAME {
 
   DeleteGroup(group) {
     this.groupToDismiss.push(group);
-    for (let i = 0; i < group.users.length; i++) {
-      this.SendMessage(group.users[i].id, `Clique Dismissed.`, 'Whatever.');
+    let index;
+    for (var i = 0; i < this.groupToExplode.length; i++) {
+      index = tool.FindIndexById(this.groupToExplode, group.id)
+    }
+    if (index === -1) {
+      for (let i = 0; i < group.users.length; i++) {
+        this.SendMessage(group.users[i].id, `Clique Dismissed.`, 'Whatever.');
+      }
     }
   }
 

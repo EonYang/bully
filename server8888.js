@@ -41,8 +41,8 @@ web.on('connection', function(socket) {
     for (let i = 0; i < data.users.length; i++) {
       if (data.users[i].id === socket.id) {
         data.users[i].destination = {
-          x: newData.x,
-          y: newData.y
+          x: tool.Constrain(newData.x, 0, config.canvas.x),
+          y: tool.Constrain(newData.y, 0, config.canvas.y)
         }
         break;
       }
