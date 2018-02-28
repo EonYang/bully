@@ -2,12 +2,22 @@ let socket = io();
 let groupsColors= [];
 let myColor;
 let statsDiv;
+let gameCanvas;
+let infoDiv;
+let canvasPos;
 let amIAlive = 1;
 
 function setup(){
   createCanvas(640, 640);
   statsDiv = document.getElementById('game-stats');
-  // console.log(statsDiv);
+  infoDiv = document.getElementById('player-info-container');
+  gameCanvas = document.getElementById('defaultCanvas0');
+
+  canvasPos = gameCanvas.getBoundingClientRect();
+  infoDiv.style.top = canvasPos.top +'px';
+  infoDiv.style.left = parseFloat(canvasPos.right)+15 + 'px';
+  console.log(canvasPos.top);
+
   myColor = color(204, 102, 0);
   socket.on('connect', function(){
     console.log("I am connected: " + socket.id);
@@ -34,13 +44,15 @@ function setup(){
     drawGroups(groups);
   });
 }
-function draw(){
 
-
+function windowResized(){
+  canvasPos = gameCanvas.getBoundingClientRect();
+  infoDiv.style.top = canvasPos.top +'px';
+  infoDiv.style.left = parseFloat(canvasPos.right) + 15 + 'px';
 }
-function mouseMoved(){
+
+function mousePressed(){
   if(amIAlive){
-    console.log("mousedMoved");
     let pos = {
       x: mouseX,
       y: mouseY
@@ -50,10 +62,12 @@ function mouseMoved(){
     console.log("I am dead, and can't draw stuff :(");
   }
 }
+
 function randomColor(){
 
   return color;
 }
+
 function drawUsers(users){
   background(255);
   let pos = createVector();
