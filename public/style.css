@@ -3,9 +3,9 @@ body{
 }
 .container{
   width: 640px;
-  margin: 5% auto 2%;
+  margin: 2% auto 2%;
 }
-h1, h3{
+h1, h2, h3{
   font-family: 'Unica One', cursive;
   margin: 0;
 }
@@ -53,7 +53,7 @@ input[type="text"]{
   top: 0px;
   left: 0px;
 }
-#start-screen{
+#start-screen, #msg-screen{
   position: absolute;
   top: 0;
   left: 0;
@@ -61,6 +61,26 @@ input[type="text"]{
   height: 641px;
   background: #4444445e;
 }
+
+#msg-screen{
+  width: 400px;
+  height: 200px;
+  border: solid 1px;
+  border-radius: 15px;
+  display: none;
+  background: #444444d9;
+}
+#msg-screen h2{
+  margin: 8% 5% 5%;
+  font-size: 2em;
+  color: #f14949;
+}
+#msg-screen p{
+  margin: 2% 5%;
+  font-size: 1.2em;
+  color: #fff;
+}
+
 #defaultCanvas0{
   display: block;
   border: solid 1px;
