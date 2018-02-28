@@ -75,6 +75,8 @@ function setup(){
   socket.on('message', function (message) {
     console.log(message.title);
     console.log(message.body);
+    console.log(message.duration);
+
     showMessage(message);
     //timer to dismiss msg
     setTimeout(msgDismiss, message.duration);
@@ -163,9 +165,11 @@ function showMessage(m){
   body.innerHTML = m.body;
   msgDiv.appendChild(body);
 }
+
 function msgDismiss(){
   msgDiv.style.display = "none";
 }
+
 function showStats(users){
   statsDiv.innerHTML = "";
   for(user of users){
@@ -179,6 +183,6 @@ function windowResized(){
   infoDiv.style.left = parseFloat(canvasPos.right) + 15 + 'px';
   startDiv.style.top = parseFloat(canvasPos.top) +'px';
   startDiv.style.left = parseFloat(canvasPos.left) + 'px';
-  msgDiv.style.top = parseFloat(canvasPos.top) + parseFloat(canvasPos.top) + 'px';
-  msgDiv.style.left = parseFloat(canvasPos.left) + parseFloat(canvasPos.left) + 150 + 'px';
+  msgDiv.style.top = parseFloat(canvasPos.top) + 'px';
+  msgDiv.style.left = parseFloat(canvasPos.left) + 'px';
 }
