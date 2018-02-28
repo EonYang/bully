@@ -17,6 +17,7 @@ let startBtn;
 // game controll
 let amIAlive = 1;
 let gameStarted = 0;
+let timerSet = 0;
 
 function setup(){
   createCanvas(640, 640);
@@ -33,6 +34,8 @@ function setup(){
   infoDiv.style.left = parseFloat(canvasPos.right)+15 + 'px';
   startDiv.style.top = parseFloat(canvasPos.top) +'px';
   startDiv.style.left = parseFloat(canvasPos.left) + 'px';
+  msgDiv.style.top = parseFloat(canvasPos.top)+200 +'px';
+  msgDiv.style.left = parseFloat(canvasPos.left)+120 +'px';
 
   // get elements and add click events
   startBtn = document.getElementById('gamestart-btn');
@@ -52,7 +55,7 @@ function setup(){
 
   // Get data from server
   socket.on('dataStream', function(data){
-    console.log('dataStream' + data.users);
+    // console.log('dataStream' + data.users);
     let users = data.users;
 
     drawUsers(users);
@@ -71,11 +74,12 @@ function setup(){
   socket.on('message', function (message) {
     console.log(message.title);
     console.log(message.body);
-
-
+    showMessage(message);
   });
 }
-
+function draw(){
+  lifeCheck();
+}
 function mousePressed(){
   if(gameStarted){
     if(amIAlive){
@@ -91,7 +95,21 @@ function mousePressed(){
     console.log("Doing nothing, game ain't started");
   }
 }
-
+function lifeCheck(){
+  if(!amIAlive && !timerSet){
+    //wait for 10 seconds to revive
+    console.log("I have entered the waiting period");
+    timerSet = 1;
+    setTimeout(userRevive, 10000);
+  }
+}
+function userRevive(){
+  // when a user dies, set a timer for the user rejoin the game
+  // once revived, send server that this user is revived
+  amIAlive = 1;
+  timerSet = 0;
+  socket.emit('userRevive');
+}
 function drawUsers(users){
   background(255);
   let pos = createVector();
@@ -124,9 +142,23 @@ function updateUsername(){
 function startGame(){
   console.log("start clicked");
   gameStarted = 1;
-  socket.emit('userClickedStart', '' );
+  socket.emit('userClickedStart');
   //remove the start div
   startDiv.remove();
+}
+function showMessage(m){
+  //reset msgDiv
+  while (msgDiv.hasChildNodes()) {
+    msgDiv.removeChild(msgDiv.lastChild);
+  }
+  // display msg div after reset
+  msgDiv.style.display = "block";
+  var title = document.createElement('h2');
+  title.innerHTML = m.title;
+  msgDiv.appendChild(title);
+  var body = document.createElement('p');
+  body.innerHTML = m.body;
+  msgDiv.appendChild(body);
 }
 
 function showStats(users){
