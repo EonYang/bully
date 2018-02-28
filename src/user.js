@@ -38,6 +38,8 @@ class USER {
       y: this.y
     }
     this.inGroup = 0;
+    this.isAlive = 0;
+    this.die += 1;
   }
 
   Restart() {
