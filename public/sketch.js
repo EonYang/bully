@@ -84,27 +84,52 @@ function setup(){
 }
 function draw(){
   lifeCheck();
-}
-function mousePressed(){
-  if(gameStarted){
-    if(amIAlive){
-      let pos = {
-        x: mouseX,
-        y: mouseY
+  if(mouseIsPressed){
+    if(gameStarted){
+      if(amIAlive){
+        let pos = {
+          x: mouseX,
+          y: mouseY
+        }
+        socket.emit('newPosition',pos);
+      }else{
+        console.log("I am dead, and can't draw stuff :(");
       }
-      socket.emit('newPosition',pos);
     }else{
-      console.log("I am dead, and can't draw stuff :(");
+      console.log("Doing nothing, game ain't started");
     }
-  }else{
-    console.log("Doing nothing, game ain't started");
   }
+
 }
+
+// function mousePressed(){
+//   if(gameStarted){
+//     if(amIAlive){
+//       let pos = {
+//         x: mouseX,
+//         y: mouseY
+//       }
+//       socket.emit('newPosition',pos);
+//     }else{
+//       console.log("I am dead, and can't draw stuff :(");
+//     }
+//   }else{
+//     console.log("Doing nothing, game ain't started");
+//   }
+// }
+
 function lifeCheck(){
   if(!amIAlive && !timerSet){
     //wait for 10 seconds to revive
     console.log("I have entered the waiting period");
     timerSet = 1;
+    let waitingMsg = {
+      title:' You Are Dead',
+      body: 'Wait for 10 Seconds',
+      duration: 10000
+    }
+    showMessage(waitingMsg);
+    setTimeout(msgDismiss, waitingMsg.duration);
     setTimeout(userRevive, 10000);
   }
 }
@@ -115,6 +140,7 @@ function userRevive(){
   timerSet = 0;
   socket.emit('userRevive');
 }
+
 function drawUsers(users){
   background(255);
   let pos = createVector();
@@ -183,6 +209,6 @@ function windowResized(){
   infoDiv.style.left = parseFloat(canvasPos.right) + 15 + 'px';
   startDiv.style.top = parseFloat(canvasPos.top) +'px';
   startDiv.style.left = parseFloat(canvasPos.left) + 'px';
-  msgDiv.style.top = parseFloat(canvasPos.top) + 'px';
-  msgDiv.style.left = parseFloat(canvasPos.left) + 'px';
+  msgDiv.style.top = parseFloat(canvasPos.top) + parseFloat(canvasPos.top)*0.45 +'px';
+  msgDiv.style.left = parseFloat(canvasPos.left) + parseFloat(canvasPos.top)*0.55+'px';
 }
