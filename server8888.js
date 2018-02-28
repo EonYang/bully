@@ -21,7 +21,9 @@ let data = {
 var web = io.of('/');
 web.on('connection', function(socket) {
   console.log(`An player ${socket.id} connected`);
-  data.users.push(new USER(socket.id));
+  socket.on('userClickedStart', function () {
+    data.users.push(new USER(socket.id));
+  })
 
   socket.on("newPosition", function(newData) {
     // console.log(newData);
