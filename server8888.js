@@ -72,7 +72,7 @@ function Logs() {
 // setInterval(Logs, 3000);
 
 function testData() {
-  for (let i = 0; i < 16; i++) {
+  for (let i = 0; i < 26; i++) {
     data.users.push(new USER(i.toString()));
   }
   console.log('Created 16 users');

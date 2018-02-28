@@ -1,46 +1,51 @@
-body{
+body {
   font-size: 16px;
 }
-.container{
+
+.container {
   width: 640px;
   margin: 2% auto 2%;
 }
-h1, h2, h3{
+
+h1, h2, h3 {
   font-family: 'Unica One', cursive;
   margin: 0;
 }
-h1{
+
+h1 {
   font-size: 5em;
   margin-bottom: 10px;
 }
-h3{
+
+h3 {
   font-size: 2em;
 }
-p{
+
+p {
   font-family: 'Karla', sans-serif;
   font-size: 1em;
   margin: 0;
 }
-input[type="submit"]
-{
-  padding:15px;
-  background:#ccc;
-  border:0 none;
+
+input[type="submit"] {
+  padding: 15px;
+  background: #ccc;
+  border: 0 none;
   font-size: 1.2em;
-  cursor:pointer;
+  cursor: pointer;
   vertical-align: top;
 }
-input[type="text"]{
+
+input[type="text"] {
   padding: 10px;
   font-size: 1.5em;
 }
 
-#start-screen input[type="submit"]
-{
+#start-screen input[type="submit"] {
   position: absolute;
-  top:200px;
+  top: 200px;
   left: 220px;
-  padding:20px 50px;
+  padding: 20px 50px;
   font-size: 2em;
   text-transform: uppercase;
   border-radius: 15px;
@@ -48,12 +53,13 @@ input[type="text"]{
   background: #fff;
 }
 
-#player-info-container{
+#player-info-container {
   position: absolute;
   top: 0px;
   left: 0px;
 }
-#start-screen, #msg-screen{
+
+#start-screen, #msg-screen {
   position: absolute;
   top: 0;
   left: 0;
@@ -62,7 +68,7 @@ input[type="text"]{
   background: #4444445e;
 }
 
-#msg-screen{
+#msg-screen {
   width: 400px;
   height: 200px;
   border: solid 1px;
@@ -70,30 +76,86 @@ input[type="text"]{
   display: none;
   background: #444444d9;
 }
-#msg-screen h2{
+
+#msg-screen h2 {
   margin: 8% 5% 5%;
   font-size: 2em;
   color: #f14949;
 }
-#msg-screen p{
+
+#msg-screen p {
   margin: 2% 5%;
   font-size: 1.2em;
   color: #fff;
 }
 
-#defaultCanvas0{
+#defaultCanvas0 {
   display: block;
   border: solid 1px;
   margin: 0 auto;
 }
-#game-container{
+
+#game-container {
   display: block;
   /* margin-left: 700px; */
 }
-#user-input{
+
+#user-input {
   margin-top: 10px;
 }
-#user-input h3{
+
+#user-input h3 {
   display: inline-block;
   margin-right: 5%;
+}
+
+#toast {
+  z-index: 1;
+  position: absolute;
+  top: 180px;
+  /* bottom: 500px; */
+  left: 0px;
+  right: 0px;
+}
+
+#CountDownDiv {
+  z-index: 1;
+  /* background-color: rgba(0, 0, 0, 0.65); */
+  position: relative;
+  top: 350px;
+  /* bottom: 500px; */
+  left: 0px;
+  right: 0px;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 8px;
+  line-height: 12px;
+  font-family: ArialMT;
+  font-size: 64px;
+  color: rgba(0, 0, 0, 0.85);
+  letter-spacing: -0.62px;
+  text-shadow: 2px, 6px, rgba(0, 0, 0, 0.35);
+}
+
+.messageDivClass {
+  z-index: 1;
+  /* background-color: rgba(0, 0, 0, 0.65); */
+  position: relative;
+  top: 0px;
+  /* bottom: 500px; */
+  left: 0px;
+  right: 0px;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 8px;
+  line-height: 12px;
+  font-family: ArialMT;
+  font-size: 19px;
+  color: rgba(0, 0, 0, 0.85);
+  letter-spacing: -0.62px;
+  text-shadow: 2px, 6px, rgba(0, 0, 0, 0.35);
+}
+
+.messageDivClass h4, h6 {
+  drop
 }

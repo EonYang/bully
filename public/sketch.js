@@ -8,6 +8,7 @@ let infoDiv;
 let canvasPos;
 let startDiv;
 let msgDiv;
+let messageDivIdCount = 0;
 
 // inputs and btns for emit message
 let usernameInput;
@@ -18,9 +19,17 @@ let startBtn;
 let amIAlive = 1;
 let gameStarted = 0;
 let timerSet = 0;
+let toast,canvasDiv, timerText, riviveTime, CountDownDiv, CountDownTimeOutFunc;
 
 function setup(){
-  createCanvas(640, 640);
+  CountDownDiv = document.getElementById('CountDownDiv');
+  CountDownDiv.style.visibility = "hidden"
+
+  var canvas = createCanvas(640, 640);
+  canvas.parent('game-area');
+  gameArea = document.getElementById('game-area');
+  toast = document.getElementById('toast');
+  gameArea.appendChild(toast);
 
   statsDiv = document.getElementById('game-stats');
   infoDiv = document.getElementById('player-info-container');
@@ -77,9 +86,11 @@ function setup(){
     console.log(message.body);
     console.log(message.duration);
 
-    showMessage(message);
+    ShowToast(message, messageDivIdCount);
+
+    // showMessage(message);
     //timer to dismiss msg
-    setTimeout(msgDismiss, message.duration);
+    // setTimeout(msgDismiss, message.duration);
   });
 }
 function draw(){
@@ -123,14 +134,15 @@ function lifeCheck(){
     //wait for 10 seconds to revive
     console.log("I have entered the waiting period");
     timerSet = 1;
-    let waitingMsg = {
-      title:' You Are Dead',
-      body: 'Wait for 10 Seconds',
-      duration: 10000
-    }
-    showMessage(waitingMsg);
-    setTimeout(msgDismiss, waitingMsg.duration);
+    // let waitingMsg = {
+    //   title:' You Are Dead',
+    //   body: 'Wait for 10 Seconds',
+    //   duration: 10000
+    // }
+    // showMessage(waitingMsg);
+    // setTimeout(msgDismiss, waitingMsg.duration);
     setTimeout(userRevive, 10000);
+    ReviveCountDown(10);
   }
 }
 function userRevive(){
@@ -203,6 +215,16 @@ function showStats(users){
   }
 }
 
+function ShowToast(message, messageDivIdCount) {
+  CreateMessageDom(messageDivIdCount, message.title, message.body);
+  console.log('dom created');
+  setTimeout(function () {
+    ClearMessageDom(messageDivIdCount);
+    messageDivIdCount += 1;
+  }, message.duration);
+
+}
+
 function windowResized(){
   canvasPos = gameCanvas.getBoundingClientRect();
   infoDiv.style.top = canvasPos.top +'px';
@@ -211,4 +233,50 @@ function windowResized(){
   startDiv.style.left = parseFloat(canvasPos.left) + 'px';
   msgDiv.style.top = parseFloat(canvasPos.top) + parseFloat(canvasPos.top)*0.45 +'px';
   msgDiv.style.left = parseFloat(canvasPos.left) + parseFloat(canvasPos.top)*0.55+'px';
+}
+
+function CreateMessageDom(divId, title, body) {
+  // let canvasDiv = document.getElementById('defaultCanvas0');
+  // let messageMainContainer = document.getElementById('toast');
+  let messageDiv = document.createElement('div');
+  messageDiv.className = 'messageDivClass';
+  messageDiv.id = 'messageDiv'+divId;
+  toast.appendChild(messageDiv);
+
+
+  let messageTitle = document.createElement('h4');
+  messageTitle.id = 'message title';
+  messageTitle.innerHTML = title;
+
+  let messageBody = document.createElement('h6');
+  messageBody.id = 'message body';
+  messageBody.innerHTML = body;
+
+  messageDiv.appendChild(messageTitle);
+  messageDiv.appendChild(messageBody);
+  console.log('child added');
+}
+
+function ClearMessageDom(divId) {
+  let messageDom = document.getElementsByClassName('messageDivClass');
+  messageDom[0].parentNode.removeChild(messageDom[0]);
+}
+
+function ReviveCountDown(seconds) {
+  CountDownDiv.style.visibility = "visible"
+  timerText = document.getElementById('timerText');
+  riviveTime = new Date().getTime() + seconds * 1000;
+
+  setInterval(function () {
+    let now = new Date().getTime();
+    timerText.innerHTML = Math.floor((riviveTime - now)/1000);
+  }, 1000);
+  setTimeout(function () {
+    CountDownDiv.style.visibility = "hidden"
+  },seconds * 1000)
+}
+
+function ClearMessageDom(divId) {
+  let messageDom = document.getElementsByClassName('messageDivClass');
+  messageDom[0].parentNode.removeChild(messageDom[0]);
 }

@@ -14,6 +14,7 @@ class GROUP {
     this.power = this.users.length;
     this.name = names.split("")[Math.floor(Math.random() * 25)];
     this.id = tool.CreateId();
+    this.isActive = 1;
   }
 
   AddMember(user3) {

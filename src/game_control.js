@@ -23,7 +23,7 @@ class GAME {
     ];
 
     this.messagesToSend = [
-      // { // obj {to who, event, text{title, boddy, duration}}
+      // {  obj {to who, event, text{title, boddy, duration}}
       //   id: 'placeholder',
       //   event: 'testMessage',
       //   text: {
@@ -138,11 +138,12 @@ class GAME {
   };
 
   EvenlyMatched(groupA, groupB) {
+
     for (let i = 0; i < groupA.users.length; i++) {
-      this.SendMessage(groupA.users[i].id, `Evenly Matched!`, `You all get hurt seriously, wait for your recovery`);
+      this.SendMessage(groupA.users[i].id, `Evenly Matched!`, `You all get hurt seriously, wait for your recovery`, 10);
     }
     for (let i = 0; i < groupB.users.length; i++) {
-      this.SendMessage(groupB.users[i].id, `Evenly Matched!`, `You all get hurt seriously, wait for your recovery`);
+      this.SendMessage(groupB.users[i].id, `Evenly Matched!`, `You all get hurt seriously, wait for your recovery`, 10);
     }
     this.groupToExplode.push(groupA);
     this.groupToExplode.push(groupB);
@@ -166,6 +167,7 @@ class GAME {
   };
 
   DeleteGroup(group) {
+    group.isActive = 0;
     this.groupToDismiss.push(group);
     let index;
     for (var i = 0; i < this.groupToExplode.length; i++) {
@@ -201,7 +203,7 @@ class GAME {
       if (!users[i].inGroup & users[i].isAlive) {
         for (let k = 0; k < groups.length; k++) {
           // console.log('checking user hit group');
-          if (tool.IsHit(users[i], groups[k])) {
+          if (groups[k].isActive && tool.IsHit(users[i], groups[k])) {
             switch (groups[k].users.length) {
               case 2:
                 users[i].inGroup = 1;
@@ -226,18 +228,22 @@ class GAME {
   // CheckEveryFrame
   GroupHitsGroup(groups) {
     for (let i = 0; i < groups.length; i++) {
-      for (let k = i; k < groups.length; k++) {
+      for (let k = i + 1; k < groups.length; k++) {
         // console.log('checking group hit group');
-        if (i != k && tool.IsHit(groups[i], groups[k])) {
+        if (i != k && groups[i].isActive && groups[k].isActive && tool.IsHit(groups[i], groups[k])) {
           let powerDiffrence = groups[i].users.length - groups[k].users.length;
           switch (powerDiffrence) {
             case 1:
+              groups[k].isActive = 0;
               this.Bully3v2(groups[i], groups[k]);
               break;
             case 0:
+              groups[i].isActive = 0;
+              groups[k].isActive = 0;
               this.EvenlyMatched(groups[i], groups[k]);
               break;
             case - 1:
+              groups[i].isActive = 0;
               this.Bully3v2(groups[k], groups[i]);
               break;
             default:
