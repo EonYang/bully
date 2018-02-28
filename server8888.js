@@ -32,6 +32,10 @@ web.on('connection', function(socket) {
     data.users[index].name = name;
   })
 
+  socket.on('userRevive', function () {
+    game.userToRevive.push(socket.id);
+  })
+
   socket.on("newPosition", function(newData) {
     // console.log(newData);
     for (let i = 0; i < data.users.length; i++) {

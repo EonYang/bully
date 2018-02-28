@@ -27,10 +27,15 @@ class TOOL {
     }
   }
 
-  Random(max){
-    let randy = Math.floor(Math.random()*max);
+  Random(max) {
+    let randy = Math.floor(Math.random() * max);
     return randy
   }
+
+  isInArray(value, array) {
+    return array.indexOf(value) > -1;
+  }
+
 }
 let tool = new TOOL();
 

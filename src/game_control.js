@@ -89,23 +89,18 @@ class GAME {
     this.messagesToSend.push(message);
   }
 
-  ReviveUser(userId) {
-    this.userToRevive.push(userId);
-    this.SendMessage(userId, 'You Are Back!', 'Go for you revenge!');
-  }
-
   CreateGroup(user1, user2) {
     this.groupToCreate.push({user1: user1, user2: user2})
-    this.SendMessage(user1.id, 'You two become a group', 'Now you can bully person who is alone');
-    this.SendMessage(user2.id, 'You two become a group', 'Now you can bully person who is alone');
+    this.SendMessage(user1.id, 'You two become a clique', 'Now you can bully person who is alone');
+    this.SendMessage(user2.id, 'You two become a clique', 'Now you can bully person who is alone');
   }
 
   GroupAddMember(group, user) {
     this.groupToAddMember.push({group: group, user: user})
-    this.SendMessage(user.id, 'Go Bully Others!', 'You joined a group, now be a bully!');
+    this.SendMessage(user.id, 'Go Bully Others!', 'You joined a clique, now be a bully!');
     // find the group, tell the two users.
     for (let i = 0; i < group.users.length; i++) {
-      this.SendMessage(group.users[i].id, 'Go Bully Others!', 'Someone joined your group, 3-person group is the biggest group, be a bully!');
+      this.SendMessage(group.users[i].id, 'Go Bully Others!', 'Someone joined your clique, 3-person clique is the strongest, be a bully!');
     }
   }
 
@@ -150,18 +145,25 @@ class GAME {
   };
 
   MemberLeaveGroup(group, user) {
-    this.userToLeaveGroup.push({group: group, user: user});
-    this.SendMessage(user.id, 'You left your group!', 'Be careful');
-    // find the group, tell the two users.
-    for (let i = 0; i < group.users.length; i++) {
-      this.SendMessage(group.users[i].id, `${user.name}left your group`, 'Betrayer!');
-    }
+    // for (var i = 0; i < this.groupToDismiss.length; i++) {
+    //   let index = tool.FindIndexById(this.groupToDismiss, group.id)
+    // }
+    // if (index === -1) {
+      this.userToLeaveGroup.push({group: group, user: user});
+      this.SendMessage(user.id, 'You left your clique!', 'Be careful');
+      // find the group, tell the two users.
+      for (let i = 0; i < group.users.length; i++) {
+        if (group.users[i].id != user.id) {
+          this.SendMessage(group.users[i].id, `${user.name}left your clique`, 'Betrayer! Betrayer! Betrayer! Betrayer! Basterd!');
+        }
+      }
+    // }
   };
 
   DeleteGroup(group) {
     this.groupToDismiss.push(group);
     for (let i = 0; i < group.users.length; i++) {
-      this.SendMessage(group.users[i].id, `You left your group`, 'Be careful.');
+      this.SendMessage(group.users[i].id, `Clique Dismissed.`, 'Whatever.');
     }
   }
 
@@ -195,6 +197,9 @@ class GAME {
                 this.GroupAddMember(groups[k], users[i]);
                 break;
               case 3:
+                this.Bully3v1(groups[k], users[i]);
+                break;
+              case 4:
                 this.Bully3v1(groups[k], users[i]);
                 break;
               default:
@@ -338,7 +343,8 @@ class GAME {
   ExcuteReviveUser(data) {
     for (let i = 0; i < this.userToRevive.length; i++) {
       let iU = tool.FindIndexById(data.users, this.userToRevive[i]);
-      data.users[iU].isAlive = 1;
+      data.users[iU].Restart();
+      this.SendMessage(data.users[iU].id, 'You Are Back!', 'Go for you revenge!');
     }
     this.userToRevive = [];
   }
@@ -380,7 +386,9 @@ class GAME {
     }
     for (let i = 0; i < this.userToLeaveGame.length; i++) {
       let index = tool.FindIndexById(data.users, this.userToLeaveGame[i]);
-      data.users.splice(index, 1);
+      if (index >= 0) {
+        data.users.splice(index, 1);
+      }
     }
     this.userToLeaveGame = [];
   }
