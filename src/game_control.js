@@ -105,9 +105,8 @@ class GAME {
     this.SendMessage(user.id, 'Go Bully Others!', 'You joined a group, now be a bully!');
     // find the group, tell the two users.
     for (let i = 0; i < group.users.length; i++) {
-      this.SendMessage(group.users[i].id, 'Go Bully Others!', 'Someone joined your group, 3-person group is the bigest group, be a bully!');
+      this.SendMessage(group.users[i].id, 'Go Bully Others!', 'Someone joined your group, 3-person group is the biggest group, be a bully!');
     }
-
   }
 
   Bully3v1(group, user) {

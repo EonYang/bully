@@ -1,28 +1,35 @@
-var USER = require('./src/user.js');
-var GROUP = require('./src/group.js');
-var GAME = require('./src/game_control.js');
-var config = require('./config.js');
-var express = require('express');
-var port = 8888;
-var app = express();
+const USER = require('./src/user.js');
+const GROUP = require('./src/group.js');
+const GAME = require('./src/game_control.js');
+const config = require('./config.js');
+const tool = require('./src/tool.js');
+
+const express = require('express');
+const port = 8888;
+const app = express();
 app.use(express.static('public'));
-var server = require('http').createServer(app).listen(port, function() {
+const server = require('http').createServer(app).listen(port, function() {
   console.log(`server on ${port}`);
 });
-var io = require('socket.io').listen(server);
+const io = require('socket.io').listen(server);
 
-var game = new GAME();
+const game = new GAME();
 
 let data = {
   users: [],
   groups: []
 };
 
-var web = io.of('/');
+const web = io.of('/');
 web.on('connection', function(socket) {
   console.log(`An player ${socket.id} connected`);
   socket.on('userClickedStart', function () {
     data.users.push(new USER(socket.id));
+  })
+
+  socket.on('username', function (name) {
+    let index = tool.FindIndexById(data.users, socket.id);
+    data.users[index].name = name;
   })
 
   socket.on("newPosition", function(newData) {
@@ -71,7 +78,7 @@ function testData() {
 testData();
 
 function ExcuteSendingMessage(messages) {
-  for (var i = 0; i < messages.length; i++) {
+  for (let i = 0; i < messages.length; i++) {
     try {
       io.to(messages[i].id).emit(messages[i].event, messages[i].text);
     } catch (e) {
