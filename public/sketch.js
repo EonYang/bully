@@ -7,6 +7,7 @@ let gameCanvas;
 let infoDiv;
 let canvasPos;
 let startDiv;
+let msgDiv;
 
 // inputs and btns for emit message
 let usernameInput;
@@ -16,6 +17,7 @@ let startBtn;
 // game controll
 let amIAlive = 1;
 let gameStarted = 0;
+
 
 function setup(){
   createCanvas(640, 640);
@@ -64,6 +66,13 @@ function setup(){
     let groups = data.groups;
     // createDiv("group: "+data.groups);
     drawGroups(groups);
+  });
+
+  socket.on('message', function (message) {
+    console.log(message.title);
+    console.log(message.body);
+
+
   });
 }
 
@@ -114,6 +123,7 @@ function updateUsername(){
 
 function startGame(){
   console.log("start clicked");
+  gameStarted = 1;
   socket.emit('userClickedStart', '' );
   //remove the start div
   startDiv.remove();

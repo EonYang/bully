@@ -36,6 +36,7 @@ web.on('connection', function(socket) {
       }
     }
   });
+
   //listen to disconnect, if call, delete the user;
   socket.on('disconnect', function() {
     userToDelete.push(socket.id);
