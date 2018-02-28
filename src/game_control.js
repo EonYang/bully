@@ -5,6 +5,10 @@ const tool = require('./tool.js');
 
 class GAME {
   constructor() {
+    this.userToLeaveGame = [
+      //string, userid
+    ]
+
     this.reasons = [
       'reason1',
       'reason2',
@@ -124,7 +128,7 @@ class GAME {
       victims.push(group2.users[i].name);
     }
     for (var i = 0; i < group3.users.length; i++) {
-      bullier.push(group3.users[i].name);
+      bulliers.push(group3.users[i].name);
       this.userToAddScore.push(group3.users[i]);
       this.SendMessage(group3.users[i].id, `You bullied ${victims.toString()}!`, `Now they probably run his/her butt home`);
     }
@@ -142,6 +146,8 @@ class GAME {
     for (var i = 0; i < groupB.users.length; i++) {
       this.SendMessage(groupB.users[i].id, `Evenly Matched!`, `You all get hurt seriously, wait for your recovery`);
     }
+    this.groupToExplode.push(groupA);
+    this.groupToExplode.push(groupB);
   };
 
   MemberLeaveGroup(group, user) {
@@ -169,6 +175,8 @@ class GAME {
           console.log('user hits user!');
           if (!users[i].inGroup && !users[k].inGroup) {
             console.log('creating new group');
+            users[i].inGroup = 1;
+            users[k].inGroup = 1;
             this.CreateGroup(users[i], users[k]);
           }
         }
@@ -184,6 +192,7 @@ class GAME {
           if (tool.IsHit(users[i], groups[k])) {
             switch (groups[k].power) {
               case 2:
+                users[i].inGroup = 1;
                 this.GroupAddMember(groups[k], users[i]);
                 break;
               case 3:
@@ -243,16 +252,6 @@ class GAME {
     }
   }
 
-  CheckEveryFrame(data) {
-    let users = data.users;
-    let groups = data.groups;
-    this.UserHitsUser(users);
-    this.UserHitsGroup(users, groups);
-    this.GroupHitsGroup(groups);
-    this.MemberGetsFarAwayFromGroup(groups, users);
-    this.GroupMemberNotEnough(groups);
-  }
-
   // *** 1 hit 1
   // this.groupToCreate = [
   //obj, {user1, user2}
@@ -293,14 +292,6 @@ class GAME {
       let iU = tool.FindIndexById(data.users, this.userToDie[i].id);
       data.users[iU].isAlive = 0;
       data.users[iU].die += 1;
-      // let tempId = data.users[iU].id;
-      //
-      // setTimeout(function(tempId) {
-      //   let index = tool.FindIndexById(tempId);
-      //   console.log(index);
-      //   data.users[index].isAlive = 1;
-      //   console.log(index);
-      // }(tempId), 10000);
     }
     this.userToDie = [];
   }
@@ -375,7 +366,49 @@ class GAME {
     this.groupToDismiss = [];
   }
 
+  ExcuteUserLeftGame(data) {
+    for (var i = 0; i < data.groups.length; i++) {
+      for (var k = 0; k < data.groups[i].users.length; k++) {
+        for (var u = 0; u < this.userToLeaveGame.length; u++) {
+          if (data.groups[i].users[k].id === this.userToLeaveGame[u]) {
+            data.groups[i].users.splice[k, 1];
+            console.log(`delete user ${data.groups[i].users[k].id} from group ${data.groups[i].id}`);
+          }
+        }
+      }
+    }
+    for (var i = 0; i < this.userToLeaveGame.length; i++) {
+      let index = tool.FindIndexById(data.users, this.userToLeaveGame[i]);
+      data.users.splice(index, 1);
+    }
+    this.userToLeaveGame = [];
+  }
+
+  ExcuteUpdateUserPositions(data) {
+    for (let i = 0; i < data.users.length; i++) {
+      data.users[i].Update();
+    }
+    for (let i = 0; i < data.groups.length; i++) {
+      data.groups[i].Update(data.users);
+    }
+  }
+
+  CheckEveryFrame(data) {
+    let users = data.users;
+    let groups = data.groups;
+    this.UserHitsUser(users);
+    this.UserHitsGroup(users, groups);
+    this.GroupHitsGroup(groups);
+    try {
+      this.MemberGetsFarAwayFromGroup(groups, users);
+    } catch (e) {
+      console.log('here occurs a problem again, but who cares!');
+    }
+    this.GroupMemberNotEnough(groups);
+  }
+
   ExcuteAll(data) {
+    this.ExcuteUpdateUserPositions(data);
     this.ExcuteReviveUser(data);
     this.ExcuteCreateGroup(data);
     this.ExcuteGroupAddMember(data);
@@ -384,6 +417,7 @@ class GAME {
     this.ExcuteExplode(data);
     this.ExcuteLeaveGroup(data);
     this.ExcuteDismissGroup(data);
+    this.ExcuteUserLeftGame(data);
   }
 }
 
