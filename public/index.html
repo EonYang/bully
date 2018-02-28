@@ -8,16 +8,27 @@
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-  <script src="sketch.js"></script>
-  <div id="game-container">
-    <h1>Bully</h1>
-    <h3>Player Stats</h3>
-    <div id="game-stats"></div>
-    
-    <h3>Change Your Name</h3>
-    <div id="user-input">
-      <input type="text" placeholder="Anonymous"></input>
+  <div class="container">
+    <div id="start-screen">
+      <input type="submit" id="gamestart-btn" value="start"></input>
     </div>
+
+    <div id="player-info-container">
+      <h3>Player Stats</h3>
+      <div id="game-stats">
+      </div>
+    </div>
+
+    <script src="sketch.js"></script>
+    <div id="game-container">
+      <h1>Bully</h1>
+      <div id="user-input">
+        <h3>Change Your Name</h3>
+        <input type="text" id="username" placeholder="Anonymous"></input>
+        <input type="submit" id="username-btn" value="Update"></input>
+      </div>
+    </div>
+
   </div>
 </body>
 </html>

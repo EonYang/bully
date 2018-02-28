@@ -1,12 +1,16 @@
 body{
   font-size: 16px;
 }
+.container{
+  width: 640px;
+  margin: 5% auto 2%;
+}
 h1, h3{
   font-family: 'Unica One', cursive;
   margin: 0;
 }
 h1{
-  font-size: 4em;
+  font-size: 5em;
   margin-bottom: 10px;
 }
 h3{
@@ -17,20 +21,59 @@ p{
   font-size: 1em;
   margin: 0;
 }
-#defaultCanvas0{
-  display: inline-block;
+input[type="submit"]
+{
+  padding:15px;
+  background:#ccc;
+  border:0 none;
+  font-size: 1.2em;
+  cursor:pointer;
+  vertical-align: top;
+}
+input[type="text"]{
+  padding: 10px;
+  font-size: 1.5em;
+}
+
+#start-screen input[type="submit"]
+{
+  position: absolute;
+  top:200px;
+  left: 220px;
+  padding:20px 50px;
+  font-size: 2em;
+  text-transform: uppercase;
+  border-radius: 15px;
+  border: solid 1px;
+  background: #fff;
+}
+
+#player-info-container{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+#start-screen{
   position: absolute;
   top: 0;
-  left: 10px;
+  left: 0;
+  width: 641px;
+  height: 641px;
+  background: #4444445e;
+}
+#defaultCanvas0{
+  display: block;
+  border: solid 1px;
+  margin: 0 auto;
 }
 #game-container{
-  display: inline-block;
-  margin-left: 700px;
+  display: block;
+  /* margin-left: 700px; */
 }
 #user-input{
   margin-top: 10px;
 }
-#user-input input[type="text"]{
-  padding: 10px;
-  font-size: 1.5em;
+#user-input h3{
+  display: inline-block;
+  margin-right: 5%;
 }
