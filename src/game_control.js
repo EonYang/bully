@@ -29,7 +29,7 @@ class GAME {
         text: {
           title: 'test title',
           body: `placeholder`,
-          duration: 1
+          duration:1,
         }
       }
     ]
@@ -149,19 +149,19 @@ class GAME {
   };
 
   MemberLeaveGroup(group, user) {
-    for (var i = 0; i < this.groupToDismiss.length; i++) {
-      let index = tool.FindIndexById(this.groupToDismiss, group.id)
-    }
-    if (index === -1) {
-
+    // for (var i = 0; i < this.groupToDismiss.length; i++) {
+    //   let index = tool.FindIndexById(this.groupToDismiss, group.id)
+    // }
+    // if (index === -1) {
+      this.userToLeaveGroup.push({group: group, user: user});
+      this.SendMessage(user.id, 'You left your clique!', 'Be careful');
+      // find the group, tell the two users.
       for (let i = 0; i < group.users.length; i++) {
         if (group.users[i].id != user.id) {
           this.SendMessage(group.users[i].id, `${user.name}left your clique`, 'Betrayer! Betrayer! Betrayer! Betrayer! Basterd!');
         }
       }
-    }
-    this.userToLeaveGroup.push({group: group, user: user});
-    this.SendMessage(user.id, 'You left your clique!', 'Be careful');
+    // }
   };
 
   DeleteGroup(group) {
