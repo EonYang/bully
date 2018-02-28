@@ -21,10 +21,45 @@ p{
   font-size: 1em;
   margin: 0;
 }
+input[type="submit"]
+{
+  padding:15px;
+  background:#ccc;
+  border:0 none;
+  font-size: 1.2em;
+  cursor:pointer;
+  vertical-align: top;
+}
+input[type="text"]{
+  padding: 10px;
+  font-size: 1.5em;
+}
+
+#start-screen input[type="submit"]
+{
+  position: absolute;
+  top:200px;
+  left: 220px;
+  padding:20px 50px;
+  font-size: 2em;
+  text-transform: uppercase;
+  border-radius: 15px;
+  border: solid 1px;
+  background: #fff;
+}
+
 #player-info-container{
   position: absolute;
   top: 0px;
   left: 0px;
+}
+#start-screen{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 641px;
+  height: 641px;
+  background: #4444445e;
 }
 #defaultCanvas0{
   display: block;
@@ -41,18 +76,4 @@ p{
 #user-input h3{
   display: inline-block;
   margin-right: 5%;
-}
-
-#user-input input[type="submit"]
-{
-  padding:15px;
-  background:#ccc;
-  border:0 none;
-  font-size: 1.2em;
-  cursor:pointer;
-  vertical-align: top;
-}
-#user-input input[type="text"]{
-  padding: 10px;
-  font-size: 1.5em;
 }
