@@ -79,7 +79,7 @@ function testData() {
   data.groups.push(new GROUP(data.users[2], data.users[5]))
 }
 
-testData();
+//testData();
 
 function ExcuteSendingMessage(messages) {
   for (let i = 0; i < messages.length; i++) {
