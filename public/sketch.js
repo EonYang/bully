@@ -34,6 +34,7 @@ function setup(){
   infoDiv.style.left = parseFloat(canvasPos.right)+15 + 'px';
   startDiv.style.top = parseFloat(canvasPos.top) +'px';
   startDiv.style.left = parseFloat(canvasPos.left) + 'px';
+
   msgDiv.style.top = parseFloat(canvasPos.top)+200 +'px';
   msgDiv.style.left = parseFloat(canvasPos.left)+120 +'px';
 
@@ -75,6 +76,8 @@ function setup(){
     console.log(message.title);
     console.log(message.body);
     showMessage(message);
+    //timer to dismiss msg
+    setTimeout(msgDismiss, message.duration);
   });
 }
 function draw(){
@@ -160,7 +163,9 @@ function showMessage(m){
   body.innerHTML = m.body;
   msgDiv.appendChild(body);
 }
-
+function msgDismiss(){
+  msgDiv.style.display = "none";
+}
 function showStats(users){
   statsDiv.innerHTML = "";
   for(user of users){
@@ -174,4 +179,6 @@ function windowResized(){
   infoDiv.style.left = parseFloat(canvasPos.right) + 15 + 'px';
   startDiv.style.top = parseFloat(canvasPos.top) +'px';
   startDiv.style.left = parseFloat(canvasPos.left) + 'px';
+  msgDiv.style.top = parseFloat(canvasPos.top) + parseFloat(canvasPos.top) + 'px';
+  msgDiv.style.left = parseFloat(canvasPos.left) + parseFloat(canvasPos.left) + 150 + 'px';
 }
