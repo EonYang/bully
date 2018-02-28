@@ -36,6 +36,12 @@ class TOOL {
     return array.indexOf(value) > -1;
   }
 
+  Constrain(num, min, max){
+    num = num >= max? max : num;
+    num = num <= min? min : num;
+    return num
+  }
+
 }
 let tool = new TOOL();
 
