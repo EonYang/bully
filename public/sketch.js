@@ -18,7 +18,6 @@ let startBtn;
 let amIAlive = 1;
 let gameStarted = 0;
 
-
 function setup(){
   createCanvas(640, 640);
 
@@ -26,6 +25,7 @@ function setup(){
   infoDiv = document.getElementById('player-info-container');
   gameCanvas = document.getElementById('defaultCanvas0');
   startDiv = document.getElementById('start-screen');
+  msgDiv = document.getElementById('msg-screen');
 
   // initial layout position for start screen
   canvasPos = gameCanvas.getBoundingClientRect();
