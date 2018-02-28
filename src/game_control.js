@@ -104,7 +104,7 @@ class GAME {
     this.groupToAddMember.push({group: group, user: user})
     this.SendMessage(user.id, 'Go Bully Others!', 'You joined a group, now be a bully!');
     // find the group, tell the two users.
-    for (var i = 0; i < group.users.length; i++) {
+    for (let i = 0; i < group.users.length; i++) {
       this.SendMessage(group.users[i].id, 'Go Bully Others!', 'Someone joined your group, 3-person group is the bigest group, be a bully!');
     }
 
@@ -112,7 +112,7 @@ class GAME {
 
   Bully3v1(group, user) {
     let bulliers = [];
-    for (var i = 0; i < group.users.length; i++) {
+    for (let i = 0; i < group.users.length; i++) {
       bulliers.push(group.users[i].name);
       this.userToAddScore.push(group.users[i]);
       this.SendMessage(group.users[i].id, `You bullied ${user.name}!`, `Now he/she probably runs his/her butt home`);
@@ -124,15 +124,15 @@ class GAME {
   Bully3v2(group3, group2) {
     let bulliers = [];
     let victims = [];
-    for (var i = 0; i < group2.users.length; i++) {
+    for (let i = 0; i < group2.users.length; i++) {
       victims.push(group2.users[i].name);
     }
-    for (var i = 0; i < group3.users.length; i++) {
+    for (let i = 0; i < group3.users.length; i++) {
       bulliers.push(group3.users[i].name);
       this.userToAddScore.push(group3.users[i]);
       this.SendMessage(group3.users[i].id, `You bullied ${victims.toString()}!`, `Now they probably run his/her butt home`);
     }
-    for (var i = 0; i < group2.users.length; i++) {
+    for (let i = 0; i < group2.users.length; i++) {
       this.userToDie.push(group2.users[i]);
       this.SendMessage(group2.users[i].id, `You got bullied by ${bulliers.toString()}!`, `${this.GetARandomReason()}`);
     }
@@ -140,10 +140,10 @@ class GAME {
   };
 
   EvenlyMatched(groupA, groupB) {
-    for (var i = 0; i < groupA.users.length; i++) {
+    for (let i = 0; i < groupA.users.length; i++) {
       this.SendMessage(groupA.users[i].id, `Evenly Matched!`, `You all get hurt seriously, wait for your recovery`);
     }
-    for (var i = 0; i < groupB.users.length; i++) {
+    for (let i = 0; i < groupB.users.length; i++) {
       this.SendMessage(groupB.users[i].id, `Evenly Matched!`, `You all get hurt seriously, wait for your recovery`);
     }
     this.groupToExplode.push(groupA);
@@ -154,22 +154,22 @@ class GAME {
     this.userToLeaveGroup.push({group: group, user: user});
     this.SendMessage(user.id, 'You left your group!', 'Be careful');
     // find the group, tell the two users.
-    for (var i = 0; i < group.users.length; i++) {
+    for (let i = 0; i < group.users.length; i++) {
       this.SendMessage(group.users[i].id, `${user.name}left your group`, 'Betrayer!');
     }
   };
 
   DeleteGroup(group) {
     this.groupToDismiss.push(group);
-    for (var i = 0; i < group.users.length; i++) {
+    for (let i = 0; i < group.users.length; i++) {
       this.SendMessage(group.users[i].id, `You left your group`, 'Be careful.');
     }
   }
 
   // CheckEveryFrame
   UserHitsUser(users) {
-    for (var i = 0; i < users.length; i++) {
-      for (var k = i + 1; k < users.length; k++) {
+    for (let i = 0; i < users.length; i++) {
+      for (let k = i + 1; k < users.length; k++) {
         // console.log('checking user hit user');
         if (users[i].isAlive && users[k].isAlive && tool.IsHit(users[i], users[k])) {
           console.log('user hits user!');
@@ -185,9 +185,9 @@ class GAME {
   }
   // CheckEveryFrame
   UserHitsGroup(users, groups) {
-    for (var i = 0; i < users.length; i++) {
+    for (let i = 0; i < users.length; i++) {
       if (!users[i].inGroup & users[i].isAlive) {
-        for (var k = 0; k < groups.length; k++) {
+        for (let k = 0; k < groups.length; k++) {
           // console.log('checking user hit group');
           if (tool.IsHit(users[i], groups[k])) {
             switch (groups[k].power) {
@@ -208,8 +208,8 @@ class GAME {
   }
   // CheckEveryFrame
   GroupHitsGroup(groups) {
-    for (var i = 0; i < groups.length; i++) {
-      for (var k = i; k < groups.length; k++) {
+    for (let i = 0; i < groups.length; i++) {
+      for (let k = i; k < groups.length; k++) {
         // console.log('checking group hit group');
         if (i != k && tool.IsHit(groups[i], groups[k])) {
           let powerDiffrence = groups[i].power - groups[k].power;
@@ -232,8 +232,8 @@ class GAME {
   }
   // CheckEveryFrame
   MemberGetsFarAwayFromGroup(groups, users) {
-    for (var i = 0; i < groups.length; i++) {
-      for (var k = 0; k < groups[i].users.length; k++) {
+    for (let i = 0; i < groups.length; i++) {
+      for (let k = 0; k < groups[i].users.length; k++) {
         let index = tool.FindIndexById(users, groups[i].users[k].id);
         // console.log(index);
         // console.log('checking user away group');
@@ -245,7 +245,7 @@ class GAME {
   }
   // CheckEveryFrame
   GroupMemberNotEnough(groups) {
-    for (var i = 0; i < groups.length; i++) {
+    for (let i = 0; i < groups.length; i++) {
       if (groups[i].users.length < 2) {
         this.DeleteGroup(groups[i]);
       }
@@ -257,7 +257,7 @@ class GAME {
   //obj, {user1, user2}
   // ];
   ExcuteCreateGroup(data) {
-    for (var i = 0; i < this.groupToCreate.length; i++) {
+    for (let i = 0; i < this.groupToCreate.length; i++) {
       data.groups.push(new GROUP(this.groupToCreate[i].user1, this.groupToCreate[i].user2));
       let i1 = tool.FindIndexById(data.users, this.groupToCreate[i].user1.id);
       let i2 = tool.FindIndexById(data.users, this.groupToCreate[i].user2.id);
@@ -273,7 +273,7 @@ class GAME {
   // ]
 
   ExcuteGroupAddMember(data) {
-    for (var i = 0; i < this.groupToAddMember.length; i++) {
+    for (let i = 0; i < this.groupToAddMember.length; i++) {
       let iU = tool.FindIndexById(data.users, this.groupToAddMember[i].user.id);
       let iG = tool.FindIndexById(data.groups, this.groupToAddMember[i].group.id);
       data.users[iU].inGroup = 1;
@@ -288,7 +288,7 @@ class GAME {
   // ]
 
   ExcuteKillUser(data) {
-    for (var i = 0; i < this.userToDie.length; i++) {
+    for (let i = 0; i < this.userToDie.length; i++) {
       let iU = tool.FindIndexById(data.users, this.userToDie[i].id);
       data.users[iU].isAlive = 0;
       data.users[iU].die += 1;
@@ -300,7 +300,7 @@ class GAME {
   //obj, users
   // ]
   ExcuteAddScore(data) {
-    for (var i = 0; i < this.userToAddScore.length; i++) {
+    for (let i = 0; i < this.userToAddScore.length; i++) {
       let iU = tool.FindIndexById(data.users, this.userToAddScore[i].id);
       data.users[iU].kill += 1;
     }
@@ -312,8 +312,8 @@ class GAME {
   //obj, groups
   // ]
   ExcuteExplode(data) {
-    for (var i = 0; i < this.groupToExplode.length; i++) {
-      for (var k = 0; k < this.groupToExplode[i].users.length; k++) {
+    for (let i = 0; i < this.groupToExplode.length; i++) {
+      for (let k = 0; k < this.groupToExplode[i].users.length; k++) {
         let iU = tool.FindIndexById(data.users, this.groupToExplode[i].users[k].id);
         data.users[iU].Explode();
       }
@@ -326,7 +326,7 @@ class GAME {
   //obj, {group user}
   // ]
   ExcuteLeaveGroup(data) {
-    for (var i = 0; i < this.userToLeaveGroup.length; i++) {
+    for (let i = 0; i < this.userToLeaveGroup.length; i++) {
       let iU = tool.FindIndexById(data.users, this.userToLeaveGroup[i].user.id);
       let iG = tool.FindIndexById(data.groups, this.userToLeaveGroup[i].group.id);
       let iUInG = tool.FindIndexById(data.groups[iG].users, this.userToLeaveGroup[i].user.id);
@@ -337,7 +337,7 @@ class GAME {
   }
 
   ExcuteReviveUser(data) {
-    for (var i = 0; i < this.userToRevive.length; i++) {
+    for (let i = 0; i < this.userToRevive.length; i++) {
       let iU = tool.FindIndexById(data.users, this.userToRevive[i]);
       data.users[iU].isAlive = 1;
     }
@@ -349,7 +349,7 @@ class GAME {
   //obj, group,
   // ];
   ExcuteDismissGroup(data) {
-    for (var i = 0; i < this.groupToDismiss.length; i++) {
+    for (let i = 0; i < this.groupToDismiss.length; i++) {
       let index = tool.FindIndexById(data.groups, this.groupToDismiss[i].id);
       switch (data.groups[index].users.length) {
         case 0:
@@ -367,9 +367,9 @@ class GAME {
   }
 
   ExcuteUserLeftGame(data) {
-    for (var i = 0; i < data.groups.length; i++) {
-      for (var k = 0; k < data.groups[i].users.length; k++) {
-        for (var u = 0; u < this.userToLeaveGame.length; u++) {
+    for (let i = 0; i < data.groups.length; i++) {
+      for (let k = 0; k < data.groups[i].users.length; k++) {
+        for (let u = 0; u < this.userToLeaveGame.length; u++) {
           if (data.groups[i].users[k].id === this.userToLeaveGame[u]) {
             data.groups[i].users.splice[k, 1];
             console.log(`delete user ${data.groups[i].users[k].id} from group ${data.groups[i].id}`);
@@ -377,7 +377,7 @@ class GAME {
         }
       }
     }
-    for (var i = 0; i < this.userToLeaveGame.length; i++) {
+    for (let i = 0; i < this.userToLeaveGame.length; i++) {
       let index = tool.FindIndexById(data.users, this.userToLeaveGame[i]);
       data.users.splice(index, 1);
     }
