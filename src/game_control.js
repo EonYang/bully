@@ -10,23 +10,26 @@ class GAME {
     ]
 
     this.reasons = [
-      'reason1',
-      'reason2',
-      'reason3',
-      'reason4',
-      'reason5',
-      'reason6',
-      'reason7',
-      'reason8',
-      'reason9'
+      'putted a turd on you desk, you need some time to cry alone.',
+      'robbed your lunch money, you need some time to cry alone.',
+      'slapped you, you need some time to cry alone.',
+      'gave you a TEXAS CHILI BOWL, you need some time to cry alone.',
+      'gave you a nipple twist, you need some time to cry alone.',
+      'locked you in your locker, you need some time to cry alone.',
+      'said you are UGLY, you need some time to cry alone.',
+      'said you never gonna amount to anything.',
+      'trolled you on Facebook.',
+      'bullied you, but nobody cares.'
     ];
+
     this.messagesToSend = [
-      { // obj {to who, event, text{title, boddy}
+      { // obj {to who, event, text{title, boddy, duration}}
         id: 'placeholder',
         event: 'testMessage',
         text: {
           title: 'test title',
-          body: `placeholder`
+          body: `placeholder`,
+          duration: 1
         }
       }
     ]
@@ -77,13 +80,14 @@ class GAME {
     return this.reasons[index]
   }
 
-  SendMessage(toId, title, body) {
+  SendMessage(toId, title, body, duration = 2) {
     let message = {
       id: toId,
       event: 'message',
       text: {
         title: title,
-        body: body
+        body: body,
+        duration: duration
       }
     }
     this.messagesToSend.push(message);
@@ -112,7 +116,7 @@ class GAME {
       this.SendMessage(group.users[i].id, `You bullied ${user.name}!`, `Now he/she probably runs his/her butt home`);
     }
     this.userToDie.push(user);
-    this.SendMessage(user.id, `You got bullied by ${bulliers.toString()}!`, `${this.GetARandomReason()}`);
+    this.SendMessage(user.id, `You Got Bullied!`, `${bulliers.toString()} ${this.GetARandomReason()}`);
   };
 
   Bully3v2(group3, group2) {
@@ -128,7 +132,7 @@ class GAME {
     }
     for (let i = 0; i < group2.users.length; i++) {
       this.userToDie.push(group2.users[i]);
-      this.SendMessage(group2.users[i].id, `You got bullied by ${bulliers.toString()}!`, `${this.GetARandomReason()}`);
+      this.SendMessage(group2.users[i].id, `You Got Bullied!`, `${bulliers.toString()} ${this.GetARandomReason()}`);
     }
     this.groupToExplode.push(group2);
   };
@@ -145,19 +149,19 @@ class GAME {
   };
 
   MemberLeaveGroup(group, user) {
-    // for (var i = 0; i < this.groupToDismiss.length; i++) {
-    //   let index = tool.FindIndexById(this.groupToDismiss, group.id)
-    // }
-    // if (index === -1) {
-      this.userToLeaveGroup.push({group: group, user: user});
-      this.SendMessage(user.id, 'You left your clique!', 'Be careful');
-      // find the group, tell the two users.
+    for (var i = 0; i < this.groupToDismiss.length; i++) {
+      let index = tool.FindIndexById(this.groupToDismiss, group.id)
+    }
+    if (index === -1) {
+
       for (let i = 0; i < group.users.length; i++) {
         if (group.users[i].id != user.id) {
           this.SendMessage(group.users[i].id, `${user.name}left your clique`, 'Betrayer! Betrayer! Betrayer! Betrayer! Basterd!');
         }
       }
-    // }
+    }
+    this.userToLeaveGroup.push({group: group, user: user});
+    this.SendMessage(user.id, 'You left your clique!', 'Be careful');
   };
 
   DeleteGroup(group) {
@@ -198,9 +202,11 @@ class GAME {
                 break;
               case 3:
                 this.Bully3v1(groups[k], users[i]);
+                users[i].isAlive = 0;
                 break;
               case 4:
                 this.Bully3v1(groups[k], users[i]);
+                users[i].isAlive = 0;
                 break;
               default:
                 console.log("user hits a group, but group power is invalid");
@@ -275,7 +281,6 @@ class GAME {
   // this.groupToAddMember = [
   //obj, {group, user}
   // ]
-
   ExcuteGroupAddMember(data) {
     for (let i = 0; i < this.groupToAddMember.length; i++) {
       let iU = tool.FindIndexById(data.users, this.groupToAddMember[i].user.id);
