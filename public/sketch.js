@@ -22,14 +22,16 @@ let timerSet = 0;
 let toast,canvasDiv, timerText, riviveTime, CountDownDiv, CountDownTimeOutFunc;
 
 function setup(){
+  //div to hold doms
   CountDownDiv = document.getElementById('CountDownDiv');
   CountDownDiv.style.visibility = "hidden"
-
-  var canvas = createCanvas(640, 640);
-  canvas.parent('game-area');
   gameArea = document.getElementById('game-area');
   toast = document.getElementById('toast');
   gameArea.appendChild(toast);
+
+  var canvas = createCanvas(640, 640);
+  canvas.parent('game-area');
+
 
   statsDiv = document.getElementById('game-stats');
   infoDiv = document.getElementById('player-info-container');
@@ -211,7 +213,7 @@ function msgDismiss(){
 function showStats(users){
   statsDiv.innerHTML = "";
   for(user of users){
-    statsDiv.innerHTML += "<p>"+user.id+" "+user.name+":  "+user.kill+" </p>"
+    statsDiv.innerHTML += "<p> "+user.name+":  "+user.kill+"</p>"
   }
 }
 
