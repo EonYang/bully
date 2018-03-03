@@ -43,6 +43,9 @@ web.on('connection', function(socket) {
       case 'delete':
         ai.Delete(data);
         break;
+      case 'revive':
+        ai.Revive(data);
+        break;
     }
   })
 

@@ -45,6 +45,12 @@ class AI {
       data.users[botIndex].isAlive = 0;
     }
   }
+  Revive(data) {
+    for (var i = 0; i < this.ids.length; i++) {
+      let botIndex = tool.FindIndexById(data.users, this.ids[i]);
+      data.users[botIndex].Restart();
+    }
+  }
 }
 
 var ai = new AI();

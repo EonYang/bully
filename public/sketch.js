@@ -331,6 +331,10 @@ class AI {
   Delete(){
     socket.emit('aiControl', 'delete');
   }
+
+  Revive(){
+    socket.emit('aiControl', 'revive');
+  }
 }
 
 var ar = new AI();
