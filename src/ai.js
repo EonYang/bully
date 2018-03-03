@@ -1,5 +1,6 @@
 const tool = require('./tool.js');
 const USER = require('./user.js');
+const config = require('../config.js');
 
 class AI {
   constructor() {
@@ -20,9 +21,11 @@ class AI {
     if (this.moving) {
       for (var i = 0; i < this.ids.length; i++) {
         let botIndex = tool.FindIndexById(data.users, this.ids[i]);
+        let changeX = tool.Random(200) - 100;
+        let changeY = tool.Random(200) - 100
         data.users[botIndex].destination = {
-          x: data.users[botIndex].x + tool.Random(200) - 100,
-          y: data.users[botIndex].y + tool.Random(200) - 100
+          x: tool.Constrain(data.users[botIndex].x + changeX, 0, config.canvas.x),
+          y: tool.Constrain(data.users[botIndex].y + changeY, 0, config.canvas.x)
         }
       }
     }
