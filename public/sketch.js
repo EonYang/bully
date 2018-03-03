@@ -333,4 +333,4 @@ class AI {
   }
 }
 
-var ai = new AI();
+var ar = new AI();
