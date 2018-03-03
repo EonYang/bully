@@ -268,9 +268,17 @@ class GAME {
   }
   // CheckEveryFrame
   GroupMemberNotEnough(groups) {
+
     for (let i = 0; i < groups.length; i++) {
-      if (groups[i].users.length < 2) {
+      let aliveMember = 0;
+      for (let k = 0; k < groups[i].users.length; k++) {
+        if (groups[i].users[k].isAlive) {
+          aliveMember += 1;
+        }
+      }
+      if (aliveMember < 2) {
         this.DeleteGroup(groups[i]);
+        aliveMember = 0;
       }
     }
   }

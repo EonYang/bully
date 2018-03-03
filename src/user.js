@@ -1,15 +1,15 @@
 const config = require('../config.js');
 
 class USER {
-  constructor(id) {
+  constructor(id, name = "Anonymous", speed = config.defaultSpeed) {
     this.id = id;
-    this.name = "Anonymous";
+    this.name = name;
     this.isAlive = 1;
     this.r = config.defaultUseRadius;
 
     this.x = Math.floor(Math.random() * config.canvas.x);
     this.y = Math.floor(Math.random() * config.canvas.y);
-    this.speed = config.defaultSpeed;
+    this.speed = speed;
 
     this.kill = 0;
     this.die = 0;

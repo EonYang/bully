@@ -19,9 +19,14 @@ let startBtn;
 let amIAlive = 1;
 let gameStarted = 0;
 let timerSet = 0;
-let toast,canvasDiv, timerText, riviveTime, CountDownDiv, CountDownTimeOutFunc;
+let toast,
+  canvasDiv,
+  timerText,
+  riviveTime,
+  CountDownDiv,
+  CountDownTimeOutFunc;
 
-function setup(){
+function setup() {
   //div to hold doms
   CountDownDiv = document.getElementById('CountDownDiv');
   CountDownDiv.style.visibility = "hidden"
@@ -32,7 +37,6 @@ function setup(){
   var canvas = createCanvas(640, 640);
   canvas.parent('game-area');
 
-
   statsDiv = document.getElementById('game-stats');
   infoDiv = document.getElementById('player-info-container');
   gameCanvas = document.getElementById('defaultCanvas0');
@@ -41,13 +45,13 @@ function setup(){
 
   // initial layout position for start screen
   canvasPos = gameCanvas.getBoundingClientRect();
-  infoDiv.style.top = canvasPos.top +'px';
-  infoDiv.style.left = parseFloat(canvasPos.right)+15 + 'px';
-  startDiv.style.top = parseFloat(canvasPos.top) +'px';
+  infoDiv.style.top = canvasPos.top + 'px';
+  infoDiv.style.left = parseFloat(canvasPos.right) + 15 + 'px';
+  startDiv.style.top = parseFloat(canvasPos.top) + 'px';
   startDiv.style.left = parseFloat(canvasPos.left) + 'px';
 
-  msgDiv.style.top = parseFloat(canvasPos.top)+200 +'px';
-  msgDiv.style.left = parseFloat(canvasPos.left)+120 +'px';
+  msgDiv.style.top = parseFloat(canvasPos.top) + 200 + 'px';
+  msgDiv.style.left = parseFloat(canvasPos.left) + 120 + 'px';
 
   // get elements and add click events
   startBtn = document.getElementById('gamestart-btn');
@@ -57,16 +61,16 @@ function setup(){
   updateNameBtn.addEventListener("click", updateUsername, false);
 
   myColor = color(204, 102, 0);
-  socket.on('connect', function(){
+  socket.on('connect', function() {
     console.log("I am connected: " + socket.id);
   });
 
-  socket.on('disconncted', function(){
+  socket.on('disconncted', function() {
     socket.emit('disconnected', socket.id);
   });
 
   // Get data from server
-  socket.on('dataStream', function(data){
+  socket.on('dataStream', function(data) {
     // console.log('dataStream' + data.users);
     let users = data.users;
 
@@ -83,7 +87,7 @@ function setup(){
     drawGroups(groups);
   });
 
-  socket.on('message', function (message) {
+  socket.on('message', function(message) {
     console.log(message.title);
     console.log(message.body);
     console.log(message.duration);
@@ -95,20 +99,20 @@ function setup(){
     // setTimeout(msgDismiss, message.duration);
   });
 }
-function draw(){
+function draw() {
   lifeCheck();
-  if(mouseIsPressed){
-    if(gameStarted){
-      if(amIAlive){
+  if (mouseIsPressed) {
+    if (gameStarted) {
+      if (amIAlive) {
         let pos = {
           x: mouseX,
           y: mouseY
         }
-        socket.emit('newPosition',pos);
-      }else{
+        socket.emit('newPosition', pos);
+      } else {
         console.log("I am dead, and can't draw stuff :(");
       }
-    }else{
+    } else {
       console.log("Doing nothing, game ain't started");
     }
   }
@@ -131,8 +135,8 @@ function draw(){
 //   }
 // }
 
-function lifeCheck(){
-  if(!amIAlive && !timerSet){
+function lifeCheck() {
+  if (!amIAlive && !timerSet) {
     //wait for 10 seconds to revive
     console.log("I have entered the waiting period");
     timerSet = 1;
@@ -147,7 +151,7 @@ function lifeCheck(){
     ReviveCountDown(10);
   }
 }
-function userRevive(){
+function userRevive() {
   // when a user dies, set a timer for the user rejoin the game
   // once revived, send server that this user is revived
   amIAlive = 1;
@@ -155,43 +159,43 @@ function userRevive(){
   socket.emit('userRevive');
 }
 
-function drawUsers(users){
+function drawUsers(users) {
   background(255);
   let pos = createVector();
-  for(user of users){
-    if(user.id == socket.id){
+  for (user of users) {
+    if (user.id == socket.id) {
       // fill(255, 0, 255);
       amIAlive = user.isAlive;
       fill(myColor);
-    }else{
+    } else {
       fill(0);
     }
-    if(user.isAlive){
-      ellipse(user.x, user.y, user.r*2, user.r*2);
+    if (user.isAlive) {
+      ellipse(user.x, user.y, user.r * 2, user.r * 2);
     }
   }
 }
 
-function drawGroups(groups){
-  for(group of groups){
+function drawGroups(groups) {
+  for (group of groups) {
     fill(200, 30);
-    ellipse(group.x, group.y, group.r*2, group.r*2);
+    ellipse(group.x, group.y, group.r * 2, group.r * 2);
   }
 }
 
-function updateUsername(){
-  console.log("updateUsername: "+ usernameInput.value);
+function updateUsername() {
+  console.log("updateUsername: " + usernameInput.value);
   socket.emit('username', usernameInput.value);
 }
 
-function startGame(){
+function startGame() {
   console.log("start clicked");
   gameStarted = 1;
   socket.emit('userClickedStart');
   //remove the start div
   startDiv.remove();
 }
-function showMessage(m){
+function showMessage(m) {
   //reset msgDiv
   while (msgDiv.hasChildNodes()) {
     msgDiv.removeChild(msgDiv.lastChild);
@@ -206,35 +210,35 @@ function showMessage(m){
   msgDiv.appendChild(body);
 }
 
-function msgDismiss(){
+function msgDismiss() {
   msgDiv.style.display = "none";
 }
 
-function showStats(users){
+function showStats(users) {
   statsDiv.innerHTML = "";
-  for(user of users){
-    statsDiv.innerHTML += "<p> "+user.name+":  "+user.kill+"</p>"
+  for (user of users) {
+    statsDiv.innerHTML += "<p> " + user.name + ":  " + user.kill + "</p>"
   }
 }
 
 function ShowToast(message, messageDivIdCount) {
   CreateMessageDom(messageDivIdCount, message.title, message.body);
   console.log('dom created');
-  setTimeout(function () {
+  setTimeout(function() {
     ClearMessageDom(messageDivIdCount);
     messageDivIdCount += 1;
   }, message.duration);
 
 }
 
-function windowResized(){
+function windowResized() {
   canvasPos = gameCanvas.getBoundingClientRect();
-  infoDiv.style.top = canvasPos.top +'px';
+  infoDiv.style.top = canvasPos.top + 'px';
   infoDiv.style.left = parseFloat(canvasPos.right) + 15 + 'px';
-  startDiv.style.top = parseFloat(canvasPos.top) +'px';
+  startDiv.style.top = parseFloat(canvasPos.top) + 'px';
   startDiv.style.left = parseFloat(canvasPos.left) + 'px';
-  msgDiv.style.top = parseFloat(canvasPos.top) + parseFloat(canvasPos.top)*0.45 +'px';
-  msgDiv.style.left = parseFloat(canvasPos.left) + parseFloat(canvasPos.top)*0.55+'px';
+  msgDiv.style.top = parseFloat(canvasPos.top) + parseFloat(canvasPos.top) * 0.45 + 'px';
+  msgDiv.style.left = parseFloat(canvasPos.left) + parseFloat(canvasPos.top) * 0.55 + 'px';
 }
 
 function CreateMessageDom(divId, title, body) {
@@ -242,9 +246,8 @@ function CreateMessageDom(divId, title, body) {
   // let messageMainContainer = document.getElementById('toast');
   let messageDiv = document.createElement('div');
   messageDiv.className = 'messageDivClass';
-  messageDiv.id = 'messageDiv'+divId;
+  messageDiv.id = 'messageDiv' + divId;
   toast.appendChild(messageDiv);
-
 
   let messageTitle = document.createElement('h4');
   messageTitle.id = 'message title';
@@ -269,16 +272,65 @@ function ReviveCountDown(seconds) {
   timerText = document.getElementById('timerText');
   riviveTime = new Date().getTime() + seconds * 1000;
 
-  setInterval(function () {
+  setInterval(function() {
     let now = new Date().getTime();
-    timerText.innerHTML = Math.floor((riviveTime - now)/1000);
+    timerText.innerHTML = Math.floor((riviveTime - now) / 1000);
   }, 1000);
-  setTimeout(function () {
+  setTimeout(function() {
     CountDownDiv.style.visibility = "hidden"
-  },seconds * 1000)
+  }, seconds * 1000)
 }
 
 function ClearMessageDom(divId) {
   let messageDom = document.getElementsByClassName('messageDivClass');
   messageDom[0].parentNode.removeChild(messageDom[0]);
 }
+
+// function showSortedScores(data) {
+//   let sortedKeys = SortUsers(data.users);
+//   console.log(sortedKeys);
+//   for (let k = 0; k < sortedKeys.length; k++) {
+//     let key = sortedKeys[k];
+//     for (let i = 0; i < data.users.length; i++) {
+//       if (data[i].kill === key) {
+//         let kill = data.users[i].kill
+//         $('#ranks').append(`<li>   ${data.users[i].name}   :   ${kill} </li>`);
+//       }
+//     }
+//   }
+// }
+
+var SortUsers = (obj) => {
+  let sorted = []
+  for (var i in obj) {
+    if (obj[i].hasOwnProperty('duration')) {
+      sorted.push(obj[i].kill);
+    }
+  }
+  sorted.sort((a, b) => b - a);
+  return sorted;
+}
+
+class AI {
+  constructor() {}
+
+  Add(num = 1) {
+    for (var i = 0; i < num; i++) {
+      socket.emit('aiControl', 'add');
+    }
+  }
+
+  Move(){
+    socket.emit('aiControl', 'move');
+  }
+
+  Stop(){
+    socket.emit('aiControl', 'stop');
+  }
+
+  Delete(){
+    socket.emit('aiControl', 'delete');
+  }
+}
+
+var ai = new AI();

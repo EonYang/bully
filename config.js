@@ -1,5 +1,5 @@
 var config = {
-  defaultSpeed : 0.1,
+  defaultSpeed : 0.05,
   defaultUseRadius : 10,
   sprintCoolDownTime : 10,
   canvas : {

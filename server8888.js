@@ -3,6 +3,7 @@ const GROUP = require('./src/group.js');
 const GAME = require('./src/game_control.js');
 const config = require('./config.js');
 const tool = require('./src/tool.js');
+const ai = require('./src/ai.js');
 
 const express = require('express');
 const port = 8888;
@@ -23,17 +24,39 @@ let data = {
 const web = io.of('/');
 web.on('connection', function(socket) {
   console.log(`An player ${socket.id} connected`);
-  socket.on('userClickedStart', function () {
+  socket.on('userClickedStart', function() {
     data.users.push(new USER(socket.id));
   })
 
-  socket.on('username', function (name) {
+  socket.on('aiControl', function(code) {
+    switch (code) {
+      case 'add':
+        ai.Generate(data);
+        ai.Move(data);
+        break;
+      case 'stop':
+        ai.moving = 0;
+        break;
+      case 'move':
+        ai.moving = 1;
+        break;
+      case 'delete':
+        ai.Delete(data);
+        break;
+    }
+  })
+
+  socket.on('username', function(name) {
     let index = tool.FindIndexById(data.users, socket.id);
     data.users[index].name = name;
   })
 
-  socket.on('userRevive', function () {
+  socket.on('userRevive', function() {
     game.userToRevive.push(socket.id);
+  })
+
+  socket.on('test', function() {
+    testData();
   })
 
   socket.on("newPosition", function(newData) {
@@ -71,15 +94,16 @@ function Logs() {
 
 // setInterval(Logs, 3000);
 
-function testData() {
-  for (let i = 0; i < 26; i++) {
-    data.users.push(new USER(i.toString()));
+function testAi(number) {
+  for (var i = 0; i < number; i++) {
+    ai.Generate(data);
   }
-  console.log('Created 16 users');
-  data.groups.push(new GROUP(data.users[2], data.users[5]))
+  setInterval(function() {
+    ai.Move(data);
+  }, 300);
 }
 
-testData();
+testAi(4);
 
 function ExcuteSendingMessage(messages) {
   for (let i = 0; i < messages.length; i++) {
