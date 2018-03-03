@@ -103,11 +103,7 @@ function testAi(number) {
   }, 300);
 }
 
-<<<<<<< HEAD
 testAi(4);
-=======
-//testData();
->>>>>>> 5e6e7197de0c58aa25595c20d0c18c6b56945a16
 
 function ExcuteSendingMessage(messages) {
   for (let i = 0; i < messages.length; i++) {
