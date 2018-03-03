@@ -10,6 +10,8 @@
 
 `ar.Move();` will make them move again.
 
-`ar.Delete()` will deactive all ars.
+`ar.Delete();` will deactive all ars.
 
-`ar.Revive()`  will Reactive all ars.
+`ar.Revive();`  will Reactive all ars.
+
+- 4 ars was already added in the begining.
