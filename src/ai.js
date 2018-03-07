@@ -11,7 +11,7 @@ class AI {
   Generate(data) {
     let names = "abcdefghijklmnopqrstuvwxyz";
     let id = tool.CreateId();
-    let speed = 0.02;
+    let speed = 0.01;
     let name = names.split("")[Math.floor(Math.random() * 25)];
     this.ids.push(id);
     data.users.push(new USER(id, `bot ${name}`, 0.06));

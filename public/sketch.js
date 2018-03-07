@@ -15,6 +15,8 @@ let usernameInput;
 let updateNameBtn;
 let startBtn;
 
+let users;
+
 // game controll
 let amIAlive = 1;
 let gameStarted = 0;
@@ -72,10 +74,10 @@ function setup() {
   // Get data from server
   socket.on('dataStream', function(data) {
     // console.log('dataStream' + data.users);
-    let users = data.users;
+    users = data.users;
 
     drawUsers(users);
-    showStats(users);
+    // showStats(users);
     // let pos = createVector();
     // for(user of users){
     //   pos.x = user.x;
@@ -286,20 +288,6 @@ function ClearMessageDom(divId) {
   messageDom[0].parentNode.removeChild(messageDom[0]);
 }
 
-// function showSortedScores(data) {
-//   let sortedKeys = SortUsers(data.users);
-//   console.log(sortedKeys);
-//   for (let k = 0; k < sortedKeys.length; k++) {
-//     let key = sortedKeys[k];
-//     for (let i = 0; i < data.users.length; i++) {
-//       if (data[i].kill === key) {
-//         let kill = data.users[i].kill
-//         $('#ranks').append(`<li>   ${data.users[i].name}   :   ${kill} </li>`);
-//       }
-//     }
-//   }
-// }
-
 var SortUsers = (obj) => {
   let sorted = []
   for (var i in obj) {
@@ -320,21 +308,55 @@ class AI {
     }
   }
 
-  Move(){
+  Move() {
     socket.emit('aiControl', 'move');
   }
 
-  Stop(){
+  Stop() {
     socket.emit('aiControl', 'stop');
   }
 
-  Delete(){
+  Delete() {
     socket.emit('aiControl', 'delete');
   }
 
-  Revive(){
+  Revive() {
     socket.emit('aiControl', 'revive');
   }
 }
 
 var ar = new AI();
+
+var SortDogs = (obj) => {
+  let sorted = []
+  for (var i in obj) {
+    if (obj[i].hasOwnProperty('kill')) {
+      sorted.push(obj[i].kill);
+    }
+  }
+  sorted.sort((a, b) => b - a);
+  return sorted;
+}
+
+function showRank() {
+  let usersObj = users;
+  // console.log('show rank called');
+  // if (users != undefined) {
+    console.log(usersObj);
+    let sortedKeys = SortDogs(usersObj);
+    console.log(sortedKeys);
+    $('#ranks').empty();
+    for (let k = 0; k < 10; k++) {
+      let key = sortedKeys[k];
+      for (let i = 0; i < usersObj.length; i++) {
+        if (usersObj[i].kill === key) {
+          let kill = `${usersObj[i].kill}`;
+          $('#ranks').append(`<li>   ${usersObj[i].name}   :   ${kill} </li>`);
+        }
+      }
+    }
+  // }
+}
+
+// showRank(users);
+setInterval(showRank, 1000, );

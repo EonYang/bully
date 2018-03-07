@@ -32,13 +32,24 @@ class TOOL {
     return randy
   }
 
+  RanTest(para1, para2 = undefined) {
+      let min = para2 === undefined ? 0 : para1;
+      let max = para2 === undefined ? para1 : para2;
+      let randy = Math.floor(Math.random() * (max - min)) + min;
+      return randy
+  }
+
   isInArray(value, array) {
     return array.indexOf(value) > -1;
   }
 
-  Constrain(num, min, max){
-    num = num >= max? max : num;
-    num = num <= min? min : num;
+  Constrain(num, min, max) {
+    num = num >= max
+      ? max
+      : num;
+    num = num <= min
+      ? min
+      : num;
     return num
   }
 
