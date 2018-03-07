@@ -340,17 +340,20 @@ var SortDogs = (obj) => {
 
 function showRank() {
   let usersObj = users;
+  let printed = [];
   // console.log('show rank called');
   // if (users != undefined) {
     console.log(usersObj);
     let sortedKeys = SortDogs(usersObj);
     console.log(sortedKeys);
     $('#ranks').empty();
-    for (let k = 0; k < 10; k++) {
+
+    for (let k = 0; k < sortedKeys.length; k++) {
       let key = sortedKeys[k];
       for (let i = 0; i < usersObj.length; i++) {
-        if (usersObj[i].kill === key) {
+        if (usersObj[i].kill === key && printed.indexOf(usersObj[i].id) < 0 ) {
           let kill = `${usersObj[i].kill}`;
+          printed.push(usersObj[i].id);
           $('#ranks').append(`<li>   ${usersObj[i].name}   :   ${kill} </li>`);
         }
       }
