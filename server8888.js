@@ -26,7 +26,7 @@ web.on('connection', function(socket) {
     console.log(`An player ${socket.id} connected`);
     socket.on('userClickedStart', function() {
         data.users.push(new USER(socket.id));
-    })
+    });
 
     socket.on('aiControl', function(code) {
         switch (code) {
@@ -47,22 +47,22 @@ web.on('connection', function(socket) {
                 ai.Revive(data);
                 break;
         }
-    })
+    });
 
     socket.on('username', function(name) {
         if (name != null) {
             let index = tool.FindIndexById(data.users, socket.id);
             data.users[index].name = name;
         }
-    })
+    });
 
     socket.on('userRevive', function() {
         game.userToRevive.push(socket.id);
-    })
+    });
 
     socket.on('test', function() {
         testData();
-    })
+    });
 
     socket.on("newPosition", function(newData) {
         // console.log(newData);
@@ -71,7 +71,7 @@ web.on('connection', function(socket) {
                 data.users[i].destination = {
                     x: tool.Constrain(newData.x, 0, config.canvas.x),
                     y: tool.Constrain(newData.y, 0, config.canvas.y)
-                }
+                };
                 break;
             }
         }
@@ -87,7 +87,7 @@ function sendData() {
     game.CheckEveryFrame(data);
     game.ExcuteAll(data);
     web.emit('dataStream', data);
-    ExcuteSendingMessage(game.messagesToSend)
+    ExcuteSendingMessage(game.messagesToSend);
     game.messagesToSend = [];
 }
 
@@ -108,7 +108,7 @@ function testAi(number) {
     }, 300);
 }
 
-testAi(4);
+//testAi(4);
 
 function ExcuteSendingMessage(messages) {
     for (let i = 0; i < messages.length; i++) {

@@ -1,4 +1,4 @@
-let socket = io();
+let socket = io.connect('http://localhost:8888');
 let myColor;
 
 // for layout - getting divs and div position
