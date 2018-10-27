@@ -17,7 +17,7 @@ class USER {
     this.destination = {
       x: this.x,
       y: this.y
-    }
+    };
     this.inGroup = 0;
   }
 
