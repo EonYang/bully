@@ -174,6 +174,7 @@ function drawUsers(users) {
     }
     if (user.isAlive) {
       ellipse(user.x, user.y, user.r * 2, user.r * 2);
+		text(user.name, user.x + user.r *2, user.y+4);	
     }
   }
 }
