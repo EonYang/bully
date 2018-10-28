@@ -61,6 +61,19 @@ p {
     margin: 0;
 }
 
+button {
+	margin: 8px 0px 0px 0px;
+    border-radius: 2px;
+    border: solid 1px;
+    background-color: #151619;
+    color: #e6e6e6;
+    width: auto ;
+    padding: 15px;
+    border: 0 none;
+    font-size: 1.2em;
+    cursor: pointer;
+    vertical-align: top;
+}
 input[type="submit"] {
     border-radius: 2px;
     border: solid 1px;

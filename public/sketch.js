@@ -104,6 +104,7 @@ function setup() {
     });
 }
 
+
 function draw() {
     lifeCheck();
     if (mouseIsPressed) {
