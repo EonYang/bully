@@ -2,7 +2,7 @@
 <html>
 
 <head>
-        <script src="bodyScrollLock.js"></script>
+    <script src="bodyScrollLock.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/addons/p5.dom.min.js"></script>
@@ -21,10 +21,10 @@
             </div>
         </div>
 
-        <div class = "unselectable" id="msg-screen"></div>
+        <div class="unselectable" id="msg-screen"></div>
         <div id="game-area">
-            <div class = "unselectable" id="toast">
-                <div class = "unselectable" id="CountDownDiv">
+            <div class="unselectable" id="toast">
+                <div class="unselectable" id="CountDownDiv">
                     <h2 id="timerText"></h2>
                 </div>
             </div>
@@ -32,17 +32,17 @@
             <div id="start-screen">
                 <input type="submit" id="gamestart-btn" value="start">
             </div>
-        <div class = "unselectable" id="player-info-container">
-            <h4> Ranks </h4>
-            <div id="game-stats">
-            </div>
+            <div class="unselectable" id="player-info-container">
+                <h4> Ranks </h4>
+                <div id="game-stats">
+                </div>
 
-            <div id="texts">
-                <div id='ranksDiv'>
-                    <ol id='ranks'></ol>
+                <div id="texts">
+                    <div id='ranksDiv'>
+                        <ol id='ranks'></ol>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
 
 
@@ -50,31 +50,42 @@
 
         <script src="sketch.js"></script>
 
-	<div class="buttonsContainer">
-		      <button class="disableBodyScroll" ontouchstart="" style="-webkit-tap-highlight-color: rgba(0,0,0,0);">Disable Scroll</button>
-		            <button class="enableBodyScroll" ontouchstart="" style="-webkit-tap-highlight-color: rgba(0,0,0,0);">Enable Scroll</button>
-			        </div>
-	<script>
-	const disableBodyScrollButton = document.querySelector('.disableBodyScroll');
-	const enableBodyScrollButton = document.querySelector('.enableBodyScroll');
-	const statusElement = document.querySelector('.bodyScrollLockStatus');
+        <div class="buttonsContainer">
+            <button class="disableBodyScroll" ontouchstart="disableScroll()" style="-webkit-tap-highlight-color: rgba(0,0,0,0);">Disable Scroll</button>
+            <button class="enableBodyScroll" ontouchstart="enableScroll()" style="-webkit-tap-highlight-color: rgba(0,0,0,0);">Enable Scroll</button>
+        </div>
+        <script>
+            const disableBodyScrollButton = document.querySelector(
+                '.disableBodyScroll');
+            const enableBodyScrollButton = document.querySelector(
+                '.enableBodyScroll');
+            const statusElement = document.querySelector(
+                '.bodyScrollLockStatus');
 
-	disableBodyScrollButton.onclick = function() {
-		  console.info('disableBodyScrollButton');
-		    bodyScrollLock.disableBodyScroll(document.querySelector('.scrollTarget'));
+            disableBodyScrollButton.onclick = disableScroll;
 
-		      statusElement.innerHTML = ' &mdash; Scroll Locked';
-		        statusElement.style.color = 'red';
-	};
+            function disableScroll()
+            {
+                console.info('disableBodyScrollButton');
+                bodyScrollLock.disableBodyScroll(document.querySelector(
+                    '.scrollTarget'));
 
-enableBodyScrollButton.onclick = function() {
-	  console.info('enableBodyScrollButton');
-	    bodyScrollLock.enableBodyScroll(document.querySelector('.scrollTarget'));
+                statusElement.innerHTML = ' &mdash; Scroll Locked';
+                statusElement.style.color = 'red';
+            };
 
-	      statusElement.innerHTML = ' &mdash; Scroll Unlocked';
-	        statusElement.style.color = '';
-};
-	</script>
+            enableBodyScrollButton.onclick = enableScroll;
+
+            function enableScroll()
+            {
+                console.info('enableBodyScrollButton');
+                bodyScrollLock.enableBodyScroll(document.querySelector(
+                    '.scrollTarget'));
+
+                statusElement.innerHTML = ' &mdash; Scroll Unlocked';
+                statusElement.style.color = '';
+            };
+        </script>
     </div>
 </body>
 
