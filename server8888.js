@@ -7,12 +7,13 @@ const ai = require('./src/ai.js');
 
 const express = require('express');
 const port = 8888;
+const ioPort = 5000;
 const app = express();
 app.use(express.static('public'));
 const server = require('http').createServer(app).listen(port, function() {
     console.log(`server on ${port}`);
 });
-const io = require('socket.io').listen(server);
+const io = require('socket.io').listen(5000);
 
 const game = new GAME();
 
@@ -21,7 +22,7 @@ let data = {
     groups: []
 };
 
-const web = io.of('/');
+const web = io.of('/bullySocket');
 web.on('connection', function(socket) {
     console.log(`An player ${socket.id} connected`);
     socket.on('userClickedStart', function() {

@@ -1,4 +1,5 @@
-let socket = io.connect('http://localhost:8888');
+let socket = io.connect('http://hellidea.com/bullySocket');
+//let socket = io();
 let myColor;
 
 // for layout - getting divs and div position
