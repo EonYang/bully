@@ -7,13 +7,13 @@ const ai = require('./src/ai.js');
 
 const express = require('express');
 const port = 8888;
-const ioPort = 5000;
+const ioPort = 8888;
 const app = express();
 app.use(express.static('public'));
 const server = require('http').createServer(app).listen(port, function() {
     console.log(`server on ${port}`);
 });
-const io = require('socket.io').listen(5000);
+const io = require('socket.io').listen(server);
 
 const game = new GAME();
 

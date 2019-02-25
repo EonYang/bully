@@ -1,4 +1,4 @@
-let socket = io.connect('http://hellidea.com/bullySocket');
+let socket = io.connect('/bullySocket');
 //let socket = io();
 let myColor;
 
